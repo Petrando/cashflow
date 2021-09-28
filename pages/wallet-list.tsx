@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import Head from 'next/head'
+import useSWR from 'swr';
 import { Box, Button, Container, Grid, Typography } from "@material-ui/core";
 import { AccountBalanceWallet, Add } from '@material-ui/icons';
 import Layout from '../components/layout'
@@ -10,11 +11,14 @@ import EditWalletDialog from '../components/wallets-management/EditWallet';
 import DeleteWalletDialog from '../components/wallets-management/DeleteWallet';
 import LoadingBackdrop from '../components/globals/LoadingBackdrop';
 import ShowAlert from '../components/globals/Alert';
+import fetcher from '../lib/fetcher';
 import { walletI } from '../types'; 
 import { useWalletStyles } from '../styles/material-ui.styles';
 
 export default function WalletList() {
   const classes = useWalletStyles();
+
+  const {data:walletData, mutate, error:walletFetchErr} = useSWR('/api/wallets/wallet-list', fetcher);
 
   const [wallets, setWallets] = useState<walletI[]>([]);
   const [refreshMe, setRefresh] = useState<boolean>(true);
@@ -24,7 +28,13 @@ export default function WalletList() {
   const [idToDelete, setIdToDelete] = useState<string>('');
 
   const [error, setError] = useState<string>("");
-  
+
+  useEffect(()=>{
+      console.log(walletData);
+      console.log(walletFetchErr);
+      walletData && isLoading && setIsLoading(false);
+  }, [walletData, walletFetchErr]);
+
   useEffect(() => {
     if(refreshMe){   
       setIsLoading(true);   
@@ -57,9 +67,9 @@ export default function WalletList() {
           Wallets
         </title>
       </Head>
-      {
-        isLoading &&
-        <LoadingBackdrop isLoading={isLoading} />
+      {        
+        !walletData &&
+        <LoadingBackdrop isLoading={true} />
       } 
       <ShowAlert severity="warning" label={"ATTENTION : this page is still under development"} />     
       <Box component="div" m={1} className={classes.newWalletContainer}>
@@ -79,18 +89,18 @@ export default function WalletList() {
       <Typography variant={"h4"} className={classes.walletListHeader}>My Wallets</Typography>              
       <Container>                
         {
-          !isLoading &&
-          error === "" &&
+          walletData &&
+          !walletFetchErr &&
           (
-            wallets.length > 0 ?
+            walletData.length > 0 ?
             <Grid container spacing={1}>
-              {wallets.map((d, i) => <Wallet 
-                                        key={d._id}
-                                        walletData={d}
-                                        setEdit={()=>{setIdEdit(d._id)}}
-                                        setDelete={()=>{setIdToDelete(d._id)}}
-                                     />
-                          )}
+              {walletData.map((d, i) => <Wallet 
+                                          key={d._id}
+                                          walletData={d}
+                                          setEdit={()=>{setIdEdit(d._id)}}
+                                          setDelete={()=>{setIdToDelete(d._id)}}
+                                        />
+                            )}
             </Grid>
             :
             <p>No Wallets...</p>
@@ -134,9 +144,8 @@ export default function WalletList() {
         />
       }
       {
-				!isLoading &&
-				error !== "" &&  
-				<ShowAlert severity={"error"} label={`ERROR : ${error}`} />
+				walletFetchErr &&
+				<ShowAlert severity={"error"} label={`ERROR : ${JSON.stringify(walletFetchErr)}`} />
 			}
     </Layout>       
   )
