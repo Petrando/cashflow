@@ -20,10 +20,12 @@ const Categories = () => {
 	const [refreshMe, setRefresh] = useState<boolean>(false);
 
   useEffect(()=>{
+    console.log(data);
+    console.log(error)
     if(data && isLoading){
       setIsLoading(false);
     }
-  }, [data])
+  }, [data, error])
 
   useEffect(()=>{
     if(refreshMe){
