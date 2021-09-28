@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { getCategories } from '../../../api/categoryApi'; 
+import { getCategories } from "../../../lib/categoriesApi" 
 
 export default async function savingList(req:NextApiRequest, res:NextApiResponse) {
     

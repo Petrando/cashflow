@@ -9,7 +9,6 @@ import InitializeCategory from '../components/category-management/InitializeCate
 import LoadingBackdrop from '../components/globals/LoadingBackdrop';
 import Category from '../components/category-management/Category';
 import ShowAlert from '../components/globals/Alert';
-import { categoryI } from '../types';
 import { useCategoryStyles } from '../styles/material-ui.styles';
 
 const Categories = () => {	
@@ -20,8 +19,6 @@ const Categories = () => {
 	const [refreshMe, setRefresh] = useState<boolean>(false);
 
   useEffect(()=>{
-    console.log(data);
-    console.log(error)
     if(data && isLoading){
       setIsLoading(false);
     }
