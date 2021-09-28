@@ -81,17 +81,20 @@ export default function Transactions():JSX.Element {
         index={tabIdx}
         onChangeIndex={handleChangeIndex}
       >
-        <TabPanel value={tabIdx} index={0} dir={theme.direction}>         
-          <WalletTransactions 
-            filter={filter}
-            dispatchFilter={dispatchFilter}
-            _id={_id.toString()}
-            name={name.toString()}
-            walletBalance={walletBalance}
-            setWalletBalance={(newBalance:number)=>{
+        <TabPanel value={tabIdx} index={0} dir={theme.direction}>
+          {
+            typeof _id!=="undefined" &&
+            <WalletTransactions 
+              filter={filter}
+              dispatchFilter={dispatchFilter}
+              _id={_id.toString()}
+              name={name.toString()}
+              walletBalance={walletBalance}
+              setWalletBalance={(newBalance:number)=>{
                                                       setBalance(newBalance);
                                                     }}
-          />
+            />
+          }                   
         </TabPanel>
         <TabPanel value={tabIdx} index={1} dir={theme.direction}>
           <WalletGraph 
