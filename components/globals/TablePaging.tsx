@@ -15,7 +15,7 @@ export default function TablePaging({handlePageChange, page, count}:tablePagingI
       component="div"
       count={count}
       page={page}
-      onChangePage={(e, newPage) =>handlePageChange(newPage)}  
+      onPageChange={(e, newPage) =>{handlePageChange(newPage)}}  
       rowsPerPage={rowsPerPage}    
       rowsPerPageOptions={[5]}
       onChangeRowsPerPage={handleChangeRowsPerPage}

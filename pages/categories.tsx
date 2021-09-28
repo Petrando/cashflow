@@ -3,42 +3,34 @@ import Head from 'next/head'
 import Layout from '../components/layout'
 import { Container } from "@material-ui/core";
 import { Typography } from "@material-ui/core";
-import {getCategories} from '../api/categoryApi'
+import useSWR from 'swr';
+import fetcher from '../lib/fetcher';
 import InitializeCategory from '../components/category-management/InitializeCategory';
 import LoadingBackdrop from '../components/globals/LoadingBackdrop';
 import Category from '../components/category-management/Category';
 import ShowAlert from '../components/globals/Alert';
 import { categoryI } from '../types';
-import { useCategoryStyles, useCommonStyles } from '../styles/material-ui.styles';
+import { useCategoryStyles } from '../styles/material-ui.styles';
 
 const Categories = () => {	
 	const classes = useCategoryStyles();
-	const commonClasses = useCommonStyles();
 
-	const [categories, setCategoryData] = useState<categoryI[]>([]);
+  const { data, mutate, error } = useSWR('/api/categories/category-list', fetcher);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
-	const [refreshMe, setRefresh] = useState<boolean>(true);
-	const [error, setError] = useState<string>("");
+	const [refreshMe, setRefresh] = useState<boolean>(false);
 
-	useEffect(()=>{
-		if(refreshMe){
-			setIsLoading(true);
-			getCategories()
-				.then(data=>{
-					if(typeof data==='undefined'){   
-						setError("No data, please check your connection");                
-            			return;          
-          			}
-          			if(data.error){                    
-            			setError("Please check your connection")
-          			} else {
-            			setCategoryData(data);            			
-          			}
-          			setIsLoading(false);
-          			setRefresh(false);
-				})
-		}		
-	}, [refreshMe]);
+  useEffect(()=>{
+    if(data && isLoading){
+      setIsLoading(false);
+    }
+  }, [data])
+
+  useEffect(()=>{
+    if(refreshMe){
+      mutate();
+      setRefresh(false);
+    }
+  }, [refreshMe]);
 
 	return (
 		<Layout>      
@@ -53,34 +45,35 @@ const Categories = () => {
         			<LoadingBackdrop isLoading={isLoading} />
       			} 
 				{
-					!isLoading &&
-					error === "" &&
+					!isLoading &&			
+          !data.error &&		
 					<Typography variant="h5" className={classes.pageTitle} >
 						{
-							categories.length > 0?
+							data.length > 0?
 							'Category Management':
 							'To start, please enter initial sub category data.'
 						}
 					</Typography>
 				}				      			      				     							      			
-      			{
-      				!isLoading &&
-					error === "" &&  
+      	{
+      		!isLoading &&					
+          !data.error &&
 					<>
-					{
-						categories.length > 0?
-						categories.map((d,i)=><Category key={d._id} 
+					  {
+              data &&
+						  data.length > 0?
+						  data.map((d,i)=><Category key={d._id} 
 														categoryData={d} 
 														refresh={()=>{setRefresh(true)}} />)
-						:
-						<InitializeCategory refresh={()=>{setRefresh(true)}} />
-					}
+						  :
+						  <InitializeCategory refresh={()=>{setRefresh(true)}} />
+					  }
 					</>      				
-      			}
+      	}
 				{
 					!isLoading &&
-					error !== "" &&  
-					<ShowAlert severity={"error"} label={`ERROR : ${error}`} />
+					(error || data.error) &&  
+					<ShowAlert severity={"error"} label={`ERROR : ${error?error:"Please check your connection"}`} />
 				}  
       		</Container>
       	</Layout>

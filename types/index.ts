@@ -257,3 +257,9 @@ export interface transactionTabI {
   index: any;
   value: any;
 }
+
+export interface fetchOptionsI {
+  method:string;
+  header?:any;
+  body?:string;
+}

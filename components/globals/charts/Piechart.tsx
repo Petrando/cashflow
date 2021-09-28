@@ -9,8 +9,6 @@ const Piechart = ({width, graphData}:{width:number, graphData:graphDataI}):JSX.E
           const height = 450;          
           const margin = { top: 20, right: 30, bottom: 30, left: 40 };
 
-          console.log(graphData);
-
           const pieData = graphData.layers;
 
           const color = graphData.name==="Expense"?
@@ -55,7 +53,7 @@ const Piechart = ({width, graphData}:{width:number, graphData:graphDataI}):JSX.E
               canvas.selectAll("path.arc").filter(function(pathD){return pathD.data._id !== d.data._id}) 
                 .style("opacity", 0.5);
 
-              //const tooltip = svg.select(".tooltip");
+              const tooltip = svg.select(".tooltip");
               tooltip
                 .transition().duration(250)
                 .style("opacity", 1);
@@ -70,13 +68,13 @@ const Piechart = ({width, graphData}:{width:number, graphData:graphDataI}):JSX.E
               canvas.selectAll("path.arc")
                 .style("opacity", 1);
 
-              //const tooltip = svg.select(".tooltip");
+              const tooltip = svg.select(".tooltip");
               tooltip
                 .transition().duration(250)
                 .style("opacity", 0);
             })
-              .transition().duration(500)
-            .attrTween('d', d=>{arcTween(d)})
+              //.transition().duration(500)
+            //.attrTween('d', d=>{arcTween(d, arc)})
             
           arcPaths
             .attr("d", arc)
@@ -107,8 +105,8 @@ const Piechart = ({width, graphData}:{width:number, graphData:graphDataI}):JSX.E
                 .transition().duration(250)
                 .style("opacity", 0);
             })
-              .transition().duration(500)
-            .attrTween('d',  d=>{arcTween(d)})
+              //.transition().duration(500)
+            //.attrTween('d',  d=>{arcTween(d, arc)})
 
           arcPaths.exit()
               //.transition().duration(1000)
@@ -125,19 +123,19 @@ const Piechart = ({width, graphData}:{width:number, graphData:graphDataI}):JSX.E
               tooltip.select("text.categoryValue").text('Rp ' + d3.format(",d")(graphData.total));
           }
 
-          const arcTween = (d) => {
-            var i = d3.interpolate(d.startAngle, d.endAngle);
-            return (t) => {
-                            d.endAngle = i(t); 
-                            return arc(d)
-            }
-          }
-
           const tooltip = createTooltip(canvas, height);
 
         },
         [graphData, width]
   );
+
+  const arcTween = (d, arc) => {
+    var i = d3.interpolate(d.startAngle, d.endAngle);
+    return (t) => {
+                    d.endAngle = i(t); 
+                    return arc(d)
+    }
+  }
   
   function createTooltip(mySvgCanvas, height){
     var tooltip = mySvgCanvas.append("g")

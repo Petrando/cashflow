@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import {  useState } from 'react';
 import { Container, Button, Paper } from '@material-ui/core';
 import { ExpandLess, ExpandMore, Add}  from '@material-ui/icons/';
-import { addSubCategory, editSubCategory, deleteSubCategory } from "../../api/categoryApi";
+import fetchJson from "../../lib/fetchJson";
 import SubCategory from './SubCategory';
 import NewSubCategory from './NewSubCategory';
 import DeleteSubCategoryDialog from './DeleteSubCategory';
@@ -20,50 +20,68 @@ const [isAddingNewSub, setAddingNewSub] = useState<boolean>(false);
 const [idSubEdited, setSubEdited] = useState<string>('');
 const [idSubToDelete, setIdSubToDelete] = useState<string>('');
 
-const submitAddAndRefresh = (newSubCategory:newSubCategorySubmitI):void => {
-    addSubCategory(_id, newSubCategory)
-        .then(data=>{
-            if(typeof data==='undefined'){
-                return;
-            }
-            if(data.error){
-                console.log(data.error)
-            }else{
-                setAddingNewSub(false);
-                refresh();
-            }
-        })		
+const submitAddAndRefresh = async (newSubCategory:newSubCategorySubmitI) => {    
+      try {
+          const addResult = await fetchJson("/api/categories/add-subcategory", {
+            method: "POST",            
+            headers: {
+              Accept: 'application/json',
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({categoryId:_id, subCategory:newSubCategory})
+          });
+                    
+         processResult(addResult);
+          
+      } catch (error) {
+          console.error("An unexpected error happened:", error);
+      }
 }
 
-const submitEditAndRefresh = (sub_id:string, editedSubCategory:editSubCategorySubmitI):void => {		
-    editSubCategory(_id, sub_id, editedSubCategory)
-        .then(data=>{
-            if(typeof data==='undefined'){
-                return;
-            }
-            if(data.error){
-                console.log(data.error)
-            }else{
-                setSubEdited('');
-                refresh();
-            }
-        })
+const submitEditAndRefresh = async (sub_id:string, editedSubCategory:editSubCategorySubmitI) => {		
+      try {
+          const editResult = await fetchJson("/api/categories/edit-subcategory", {
+            method: "POST",            
+            headers: {
+              Accept: 'application/json',
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({categoryId:_id, subCategoryId:sub_id, subCategory:editedSubCategory.newName})
+          });          
+           
+          processResult(editResult);              
+      } catch (error) {
+          console.error("An unexpected error happened:", error);
+      }      
 }
 
-const submitDeleteAndRefresh = () => {
-    deleteSubCategory(_id, idSubToDelete)
-        .then(data => {
-            if(typeof data === 'undefined'){
-            return;
-        }
+const submitDeleteAndRefresh = async () => { 
+    try {
+      const deleteResult = await fetchJson("/api/categories/delete-subcategory", {
+        method: "POST",            
+        headers: {
+          Accept: 'application/json',
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({categoryId:_id, subCategoryId:idSubToDelete})
+      });          
+       
+      processResult(deleteResult);     
+  } catch (error) {
+      console.error("An unexpected error happened:", error);
+  } 
+}
 
-        if(data.error){
-            console.log(data.error)
-        }else{
-            setIdSubToDelete('');
-            refresh();
-        }
-    })		
+const processResult = (result:{acknowledged:boolean, modifiedCount:number}) => {
+  if(result.acknowledged && result.modifiedCount === 1) {
+    setAddingNewSub(false);
+    setSubEdited("");
+    setIdSubToDelete("");
+
+    refresh();
+  }else{
+    console.log(result);
+  }
 }
 
 return (
