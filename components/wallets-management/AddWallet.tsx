@@ -37,24 +37,6 @@ function AddWalletDialog({ open, cancelAdd, finishAndRefresh }:addWalletI):JSX.E
         formData.set("icon", imgFile);
   
         setIsSubmitting(true);
-
-        /*
-        createWallet(formData)
-            .then(data => {
-                if(typeof data==='undefined'){
-                    setSubmitError("No return type?");
-                    setIsSubmitting(false);
-                    return;          
-                }
-                if(data.error){          
-                    setSubmitError("Please check your connection");
-                    setIsSubmitting(false);
-                } else {                    
-                    setIsSubmitting(false);
-                    finishAndRefresh();
-                }
-            })
-        */   
     
         try {
           const addResult = await fetchJson("/api/wallets/create-wallet", {
@@ -65,7 +47,6 @@ function AddWalletDialog({ open, cancelAdd, finishAndRefresh }:addWalletI):JSX.E
               body: formData
           });
               
-          console.log(addResult);
           if(addResult.message==="success"){
             setIsSubmitting(false);
             finishAndRefresh();
