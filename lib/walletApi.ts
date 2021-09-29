@@ -31,3 +31,38 @@ export const getWalletIcon = async (walletId:string) => {
 
   return walletIcon;
 }
+
+export const addAWallet = async (newWalletData) => {
+	const { db } = await connectToDatabase();
+
+	const newWallet = await db
+		.collection("wallets")
+		.insertOne( { ...newWalletData} );
+
+	return newWallet;
+}
+
+export const updateWallet = async (id, updateData) => {
+	const { db } = await connectToDatabase();
+  
+	const updatedWallet = await db
+	  .collection("wallets")
+	  .updateOne(
+        { _id: new ObjectId(id) },
+        {
+          $set: { ...updateData },
+        }
+     )
+	return updatedWallet;
+}
+
+export const deleteWallet = async (id) => {
+	const { db } = await connectToDatabase();
+	const deletedWallet = await db
+	  .collection("wallets")
+	  .deleteOne(
+        { _id: new ObjectId(id) }
+     )
+  
+	return deletedWallet;
+}

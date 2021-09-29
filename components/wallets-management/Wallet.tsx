@@ -14,7 +14,6 @@ import {
 import { List, Edit, Delete } from '@material-ui/icons';
 import { rupiahFormatter } from '../../util-functions';
 import fetchJson from '../../lib/fetchJson';
-import { API } from "../../config";
 import { walletDisplayI } from '../../types';
 import {useWalletStyles} from '../../styles/material-ui.styles';
 
@@ -24,9 +23,6 @@ const Wallet = ({ walletData, setEdit, setDelete}:walletDisplayI):JSX.Element =>
     const [iconData, setIconData] = useState();  
 
     useEffect(()=>{
-      console.log('icon id : ');
-      console.log(_id);
-      
       getIcon();
     }, []);
 

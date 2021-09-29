@@ -21,7 +21,7 @@ export default function WalletList() {
   const {data:walletData, mutate, error:walletFetchErr} = useSWR('/api/wallets/wallet-list', fetcher);
 
   const [wallets, setWallets] = useState<walletI[]>([]);
-  const [refreshMe, setRefresh] = useState<boolean>(true);
+  const [refreshMe, setRefresh] = useState<boolean>(false);
   const [addingWallet, setAddingWallet] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [idEdited, setIdEdit] = useState<string>('');
@@ -30,11 +30,15 @@ export default function WalletList() {
   const [error, setError] = useState<string>("");
 
   useEffect(()=>{
-      console.log(walletData);
-      console.log(walletFetchErr);
       walletData && isLoading && setIsLoading(false);
   }, [walletData, walletFetchErr]);
 
+  useEffect(()=>{
+    if(refreshMe){
+      mutate();
+    }
+  }, [refreshMe]);
+  /*
   useEffect(() => {
     if(refreshMe){   
       setIsLoading(true);   
@@ -53,7 +57,7 @@ export default function WalletList() {
           setRefresh(false);
         })   
     }        
-  }, [refreshMe]);
+  }, [refreshMe]);*/
 
   const deleteAndRefresh = () => {
     setIdToDelete("");
