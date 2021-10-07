@@ -22,7 +22,7 @@ export default function Transactions():JSX.Element {
   const [walletBalance, setBalance] = useState<number>(0);
   
   useEffect(()=>{
-    setBalance(parseInt(router.query.balance.toString()));
+    router.query.balance && setBalance(parseInt(router.query.balance.toString()));
   }, []);
 
   const [filter, dispatchFilter] = useReducer(transactionFilterReducer, transactionFilter);
@@ -84,6 +84,7 @@ export default function Transactions():JSX.Element {
         <TabPanel value={tabIdx} index={0} dir={theme.direction}>
           {
             typeof _id!=="undefined" &&
+            typeof name!=="undefined" &&
             <WalletTransactions 
               filter={filter}
               dispatchFilter={dispatchFilter}

@@ -17,7 +17,7 @@ async function createWallet(req:NextApiRequest, res:NextApiResponse) {
                                 balance?:number, 
                                 createdAt?:Date, 
                                 updatedAt?:Date,
-                                icon?:{data?:any, contentType?:any}
+                                icon?:{data?:any, ['Content-Type']?:any}
                               } = {}
           newSavingData.name = name;
           newSavingData.balance = parseInt(balance); 

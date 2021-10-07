@@ -2,7 +2,10 @@ import React, {useState, useEffect, useReducer} from 'react';
 import { Button } from "@material-ui/core";
 import { Typography } from "@material-ui/core";
 import { Add }  from '@material-ui/icons/';
-import {getTransactionsByWallet, getFirstPageTransaction_and_category} from '../../api/transactionApi';
+import {getTransactionsByWallet} from '../../api/transactionApi';
+import useSWR from 'swr';
+import fetcher from '../../lib/fetcher';
+import fetchJson from '../../lib/fetchJson';
 import LoadingBackdrop from '../globals/LoadingBackdrop';
 import TransactionSortFilter from '../globals/filterComponents/TransactionSortFilter';
 import TablePaging from '../globals/TablePaging';
@@ -47,47 +50,73 @@ const WalletTransactions = ({
 															maxPage:number
 														}>
 														({
-														  	transactionCount:0, 
+														  transactionCount:0, 
 															currentPage:0,
 															maxPage:0, 															
 														});  
 
 	const {transactionCount, currentPage} = paginationData;
 
-  	const [sort, dispatchSort] = useReducer(transactionSortReducer, transactionSort);      
+  const [sort, dispatchSort] = useReducer(transactionSortReducer, transactionSort);      
+
+  /*
+  const {data:transactionsData, mutate:mutateTransactions, error:transactionError} = 
+        useSWR(_id?
+                [
+                  `/api/transactions/transactions-per-page`,
+                  {
+                    method: "POST",            
+                    headers: {
+                      Accept: 'application/json',
+                      "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({filterData:filter, sortData:sort, walletId:_id, currentPage})
+                  }
+                ]
+                :
+                null, 
+                fetcher
+              );
+
+  useEffect(()=>{
+    console.log(transactionsData);
+  }, [transactionsData]);*/
 
 	useEffect(()=>{
     	if(typeof _id !== 'undefined'){
       		setWalletId(_id);
-      		setWalletName(name);			
-      		//setWalletBalance(balance);      
+      		setWalletName(name);		    
       		getFirstPage();
     	}		
 	}, []);
 
-  	const getFirstPage = () => {  
-    	setIsLoading(true);
-    	getFirstPageTransaction_and_category(_id, sort, filter)
-      		.then(data => {
-        		if(typeof data==='undefined'){
-          			setConnectionError(true);
-          			setIsLoading(false);
-          			return;
-        		}       
-        		if(data.error){ 
-              setConnectionError(true)        
-        		}else{
-          			const {category, transaction, count} = data; 
-          			setCategories(category);
-          			if(typeof category !== 'undefined' && category.length>  0){
-            			setTransactions(setTransactionsCategoryName(transaction, category));
-          			}         
-          			setPaginationData({currentPage:0, transactionCount:count, maxPage:Math.ceil(count/itemPerPage)})
-          			setFirstLoaded(true);
-                setConnectionError(false);
-        		}
-        		setIsLoading(false);
-      		});
+
+  const getFirstPage = async () => {  
+    	setIsLoading(true);     
+
+      try {
+        const firstPageData = await fetchJson("/api/transactions/transactions-initial-data", {
+          method: "POST",            
+          headers: {
+            Accept: 'application/json',
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({filterData:filter, sortData:sort, walletId:_id})
+        });                
+        const {category, transaction, count} = firstPageData; 
+        setCategories(category);
+        if(typeof category !== 'undefined' && category.length>  0){
+          setTransactions(setTransactionsCategoryName(transaction, category));
+        }         
+        setPaginationData({currentPage:0, transactionCount:count, maxPage:Math.ceil(count/itemPerPage)})
+        setFirstLoaded(true);
+        setConnectionError(false);    
+      } catch (error) {
+        console.error("An unexpected error happened:", error);
+        setConnectionError(true);
+      } finally {
+        setIsLoading(false)
+      }
 	}
   
 	useEffect(()=>{      
@@ -115,9 +144,10 @@ const WalletTransactions = ({
     }    
   }, [filter]);
 	
-	const getNewPageData = (resetPage = false) => {
+	const getNewPageData = async (resetPage = false) => {
 		setIsLoading(true);		
 		if(walletId!==''){
+      /*
 			getTransactionsByWallet(walletId, !resetPage?currentPage:0, sort, filter)
 				.then(data=>{
 					if(typeof data === 'undefined'){
@@ -134,7 +164,29 @@ const WalletTransactions = ({
 					}
 					setIsLoading(false);
           setRefresh(false);
-				})
+				})*/
+
+        try {
+          const pageData = await fetchJson("/api/transactions/transactions-per-page", {
+            method: "POST",            
+            headers: {
+              Accept: 'application/json',
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({filterData:filter, sortData:sort, walletId, currentPage:!resetPage?currentPage:0})
+          });
+
+          console.log(pageData);
+          setTransactions(setTransactionsCategoryName(pageData));						
+          setConnectionError(false);
+        }catch(err){
+          console.log(err);
+          setConnectionError(true);	
+        }
+        finally {
+          setIsLoading(false);
+          setRefresh(false);
+        }
 		}else {			
 			setConnectionError(true);
 			setRefresh(false);

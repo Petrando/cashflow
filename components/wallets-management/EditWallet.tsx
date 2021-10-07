@@ -8,6 +8,7 @@ import { API } from "../../config";
 import ShowAlert from '../globals/Alert';
 import DialogSlide from '../globals/DialogSlide';
 import { updateWallet } from "../../api/walletApi";
+import fetchJson from '../../lib/fetchJson';
 import {editWalletI} from "../../types";
 import { useWalletStyles } from "../../styles/material-ui.styles";
 
@@ -53,7 +54,7 @@ function EditWalletDialog({
         setSubmitError("");
     }
   
-    const submitData = (e) => {
+    const submitData = async (e) => {
         e.preventDefault();
         
         if(!editDirty){
@@ -73,6 +74,7 @@ function EditWalletDialog({
         }    
     
         setIsSubmitting(true);
+        /*
         updateWallet(formData, walletToEdit._id)
             .then(data => {
                 if(typeof data==='undefined'){
@@ -87,7 +89,28 @@ function EditWalletDialog({
                     setIsSubmitting(false);
                     finishAndRefresh();
                 }
-            })   
+            });*/   
+    
+            try {
+              const updateResult = await fetchJson("/api/wallets/update-wallet", {
+                  method: "POST",              
+                  headers: {
+                              Accept: 'application/json'
+                            },
+                  body: formData
+              });
+                  
+              if(updateResult.message==="success"){
+                setIsSubmitting(false);
+                finishAndRefresh();
+              }else{
+                setIsSubmitting(false);
+              }
+                  
+            } catch (error) {
+                console.error("An unexpected error happened:", error);
+                setIsSubmitting(false);
+            }
     }
   
     return (
