@@ -130,3 +130,53 @@ export const transactionsPerPage = async (walletId, currentPage, filterData, sor
 
   return transactionData;
 }
+
+export const createTransaction  = async (balance, description, selectedCategory, selectedSubCategory, transactionIsExpense, walletToUpdateId) => {
+  const { db } = await connectToDatabase();
+
+  const today = new Date();
+  
+  const createResult = await db  
+                        .collection("transactions")
+                        .insertOne({
+                          amount: balance, 
+		                      description, 
+		                      category:{
+			                      categoryId:new ObjectId(selectedCategory),
+			                      subCategory:{
+				                      subCategoryId: new ObjectId(selectedSubCategory)
+			                      }		
+		                      },
+		                      wallet: new ObjectId(walletToUpdateId),
+                          createdAt: today,
+                          updatedAt: today
+                        });
+  if(!createResult.acknowledged || !createResult.insertedId || createResult.insertedId === null){
+    return {message:"error while creating transaction"}
+  }else {
+    updateWalletBalance(transactionIsExpense?-balance:balance, walletToUpdateId);
+  }                        
+}
+
+export const updateTransaction  = async () => {
+  
+}
+
+export const deleteTransaction  = async () => {
+  
+}
+
+const updateWalletBalance = async (balance, walletId) => {
+  const { db } = await connectToDatabase();
+
+  const updateWalletResult = await db
+                                .collection("wallets")
+                                .updateOne(
+                                  {_id:new ObjectId(walletId)},
+                                  {
+                                    $inc:{amount:balance}
+                                  }
+                                )
+
+    return updateWalletResult;
+}
