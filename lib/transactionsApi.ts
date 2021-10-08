@@ -136,7 +136,8 @@ export const createTransaction  = async (balance, description, selectedCategory,
 
   const today = new Date();
   
-  const createResult = await db  
+  try {
+    const createResult = await db  
                         .collection("transactions")
                         .insertOne({
                           amount: balance, 
@@ -151,11 +152,15 @@ export const createTransaction  = async (balance, description, selectedCategory,
                           createdAt: today,
                           updatedAt: today
                         });
-  if(!createResult.acknowledged || !createResult.insertedId || createResult.insertedId === null){
-    return {message:"error while creating transaction"}
-  }else {
-    updateWalletBalance(transactionIsExpense?-balance:balance, walletToUpdateId);
-  }                        
+    if(!createResult.acknowledged || !createResult.insertedId || createResult.insertedId === null){
+      return {message:"error while creating transaction"}
+    }else {
+      updateWalletBalance(transactionIsExpense?-balance:balance, walletToUpdateId);
+    } 
+  }catch(err){
+    return {message:err.toString()}
+  }
+                         
 }
 
 export const updateTransaction  = async (transactionId, updatedTransaction, walletBalance) => {
@@ -191,7 +196,8 @@ export const updateTransaction  = async (transactionId, updatedTransaction, wall
     updateObj.createdAt = new Date(createdAt);
   }
 
-  const updateResult = await db
+  try {
+    const updateResult = await db
                         .collection("transactions")
                         .updateOne(
                           {_id:new ObjectId(transactionId)},
@@ -200,15 +206,34 @@ export const updateTransaction  = async (transactionId, updatedTransaction, wall
                           }
                         )
 
-  if(updateResult.modifiedCount === 0){
-    return {message:"No transaction has been updated!?"}
-  }else {
-    updateWalletBalance(walletBalance, wallet);
+    if(updateResult.modifiedCount === 0){
+      return {message:"No transaction has been updated!?"}
+    }else {
+      updateWalletBalance(walletBalance, wallet);
+    }
+  }catch(err){
+    return {message:err.toString()}
   }
 }
 
 export const deleteTransaction  = async (transactionId, walletId, updatedWalletBalance) => {
-  
+  const { db } = await connectToDatabase();
+
+  try {
+    const deleteResult = await db
+                        .collection("transactions")
+                        .deleteOne({
+                          _id: new ObjectId(transactionId)
+                        })
+
+    if(deleteResult.deletedCount !== 1){
+      return {message:"error deleting transactions"}
+    }else{
+      updateWalletBalance(updatedWalletBalance, walletId);
+    }
+  }catch(err){
+    return {message:err.toString()}
+  }
 }
 
 const updateWalletBalance = async (balance, walletId) => {
