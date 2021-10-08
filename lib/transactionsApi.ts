@@ -200,10 +200,14 @@ export const updateTransaction  = async (transactionId, updatedTransaction, wall
                           }
                         )
 
-  updateWalletBalance(walletBalance, wallet);
+  if(updateResult.modifiedCount === 0){
+    return {message:"No transaction has been updated!?"}
+  }else {
+    updateWalletBalance(walletBalance, wallet);
+  }
 }
 
-export const deleteTransaction  = async () => {
+export const deleteTransaction  = async (transactionId, walletId, updatedWalletBalance) => {
   
 }
 
