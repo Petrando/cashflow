@@ -38,7 +38,7 @@ export default function AddTransactionDialog({
     }
 
     const toggleIsExpense = (newCategory:string) => {
-        const isExpense = newCategory===categories[0]._id;//because the first category is for Expense...
+        const isExpense = categories.filter(d => d._id === newCategory)[0].name === "Expense";
         setIsExpense(isExpense);
       
         if(isExpense && (balance > walletBalance)) {

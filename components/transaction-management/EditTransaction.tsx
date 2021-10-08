@@ -45,9 +45,9 @@ export default function EditTransactionDialog({
     useEffect(()=>{    	
         initializeData();
   
-        let itIsExpense = categories[0]._id === editedTransaction.category.categoryId;//because first category is expense..
-        setIsExpense(itIsExpense);
-        if(!itIsExpense){
+        let isExpense = categories.filter(d => d._id === editedTransaction.category.categoryId)[0].name === "Expense";
+        setIsExpense(isExpense);
+        if(!isExpense){
             if(walletBalance >= editedTransaction.amount){
                 setLimitBalance(1);
             }else{
