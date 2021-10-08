@@ -158,8 +158,49 @@ export const createTransaction  = async (balance, description, selectedCategory,
   }                        
 }
 
-export const updateTransaction  = async () => {
-  
+export const updateTransaction  = async (transactionId, updatedTransaction, walletBalance) => {
+  const {amount, description, category, wallet, createdAt} = updatedTransaction;
+  const {categoryId, subCategory:{subCategoryId}} = category;
+
+  const { db } = await connectToDatabase();
+
+  const updateObj:{
+    amount:number,
+    description:string,
+    category:{
+      categoryId:ObjectId,
+      subCategory:{
+        subCategoryId:ObjectId
+      }
+    },
+    createdAt?:Date,
+    updatedAt:Date
+  } = {
+    amount:amount, 
+    description:description,
+    category:{
+                categoryId:new ObjectId(categoryId),
+                subCategory:{
+                  subCategoryId: new ObjectId(subCategoryId)
+                }
+              },
+    updatedAt:new Date()
+  }
+
+  if(createdAt !== ""){
+    updateObj.createdAt = new Date(createdAt);
+  }
+
+  const updateResult = await db
+                        .collection("transactions")
+                        .updateOne(
+                          {_id:new ObjectId(transactionId)},
+                          {
+                            $set:updateObj
+                          }
+                        )
+
+  updateWalletBalance(walletBalance, wallet);
 }
 
 export const deleteTransaction  = async () => {
