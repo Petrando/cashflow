@@ -27,16 +27,22 @@ export default function AddTransactionDialog({
         if(typeof categories[0] !== 'undefined'){
             setSelectedCategory(categories[0]._id);
             setSelectedSubCategory(categories[0].subCategories[0]._id);
+            toggleIsExpense(categories[0]._id);
         }  	
     }, []);
   
     const changeCategory = (newCategory:string) => {
         setSelectedCategory(newCategory);
         setSelectedSubCategory(categories.filter(d=>d._id===newCategory)[0].subCategories[0]._id);
-        const isExpense = newCategory===categories[1]._id;//because the second category is for Expense...
+        toggleIsExpense(newCategory);        
+    }
+
+    const toggleIsExpense = (newCategory:string) => {
+        const isExpense = newCategory===categories[0]._id;//because the first category is for Expense...
         setIsExpense(isExpense);
+      
         if(isExpense && (balance > walletBalance)) {
-            setBalance(walletBalance);
+          setBalance(walletBalance);
         }
     }
   

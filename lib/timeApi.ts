@@ -1,8 +1,8 @@
 export const getCurrentMonthName = () => {
 	const today = new Date();
-    const currentMonthName = today.toLocaleString('default', { month: 'long' });
+  const currentMonthName = today.toLocaleString('default', { month: 'long' });
 
-    return currentMonthName;
+  return currentMonthName;
 }
 
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -32,8 +32,5 @@ export const createMaxIsoString = (dateString) => {
 
   const monthName = months[parseInt(monthIdx) - 1];
 
-  console.log('year : ' + year);
-  console.log('monthIdx : ' + monthIdx, 'month name : ' + monthName);
-  console.log('date : ' + date);
   return new Date(`${date} ${monthName} ${year} 23:59 UTC`);
 }

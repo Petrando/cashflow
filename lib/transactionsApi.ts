@@ -50,9 +50,6 @@ function createFilter(filterData, walletId){
 			const firstDay = new Date(`${startDate}`).toISOString();	
 			const lastDay = new Date(`${createMaxIsoString(endDate)}`).toISOString();			
 
-      console.log(firstDay);
-      console.log(lastDay);
-
 			filterObj.createdAt = {$gte:new Date(firstDay), $lte:new Date(lastDay)}	
 		}
 	}
@@ -117,11 +114,9 @@ export const getTransactionCount = async (walletId, filterData) => {
 }
 
 export const transactionsPerPage = async (walletId, currentPage, filterData, sortData) =>
-{	
-  console.log('per page...:')
+{	  
 	const filterObj = createFilter(filterData, walletId)
 	const sort = createSort(sortData);	
-  console.log(filterObj)
 
   const { db } = await connectToDatabase();
 
@@ -132,8 +127,6 @@ export const transactionsPerPage = async (walletId, currentPage, filterData, sor
 	                          .skip(currentPage * itemPerPage)
 	                          .limit(itemPerPage)
                             .toArray();
-	
-  //console.log('transaction per page :')
-  //console.log(transactionData);
+
   return transactionData;
 }

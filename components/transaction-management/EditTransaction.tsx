@@ -45,7 +45,7 @@ export default function EditTransactionDialog({
     useEffect(()=>{    	
         initializeData();
   
-        let itIsExpense = categories[0]._id !== editedTransaction.category.categoryId;
+        let itIsExpense = categories[0]._id === editedTransaction.category.categoryId;//because first category is expense..
         setIsExpense(itIsExpense);
         if(!itIsExpense){
             if(walletBalance >= editedTransaction.amount){
