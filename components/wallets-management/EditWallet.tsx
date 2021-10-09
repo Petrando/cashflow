@@ -46,7 +46,8 @@ function EditWalletDialog({
     }, [imgError]);
     
     const initializeEditData = () => {       
-        setWalletName(walletToEdit.name);
+        console.log(walletToEdit);
+        //setWalletName(walletToEdit.name);
         setBalance(walletToEdit.balance);
         setWalletError('');
         setNewImg(null);

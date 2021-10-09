@@ -125,11 +125,11 @@ export default function WalletList() {
           open={idEdited!==""} 
           cancelEdit={() => {setIdEdit("")}}
           finishAndRefresh={()=>{setRefresh(true); setIdEdit("");}}
-          walletToEdit={wallets.filter(d=>d._id===idEdited)[0]}
+          walletToEdit={walletData.filter(d=>d._id===idEdited)[0]}
           deleteInstead={()=>{
-            const walletToEdit = wallets.filter(d=>d._id===idEdited)[0];
+            const walletToEdit = walletData.filter(d=>d._id===idEdited)[0];
             setIdEdit("");
-            setIdToDelete(walletToEdit._id);            
+            setIdToDelete(walletToEdit._id);                        
           }}
         />
       }
@@ -139,9 +139,9 @@ export default function WalletList() {
           open={idToDelete!==""} 
           cancelDelete={() => {setIdToDelete("")}}
           deleteAndRefresh={()=>{deleteAndRefresh()}}
-          walletToDelete={wallets.filter(d=>d._id===idToDelete)[0]}
+          walletToDelete={walletData.filter(d=>d._id===idToDelete)[0]}
           editInstead={()=>{
-            const walletToDelete = wallets.filter(d=>d._id===idToDelete)[0];
+            const walletToDelete = walletData.filter(d=>d._id===idToDelete)[0];
             setIdToDelete("");
             setIdEdit(walletToDelete._id);
           }}
