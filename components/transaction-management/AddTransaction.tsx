@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react';
 import {addNewTransaction} from "../../api/transactionApi"
+import fetchJson from '../../lib/fetchJson';
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@material-ui/core';
 import SelectControl from '../globals/SelectControl';
 import { LoadingDiv } from '../globals/LoadingBackdrop';
@@ -46,7 +47,7 @@ export default function AddTransactionDialog({
         }
     }
   
-    const submitTransaction = (e) => {
+    const submitTransaction = async (e) => {
         e.preventDefault();  
         if(balance<=0){
             cancelAdd();
@@ -54,6 +55,7 @@ export default function AddTransactionDialog({
         }
   
         setIsSubmitting(true);
+        /*
         addNewTransaction(walletId, {balance, description, selectedCategory, selectedSubCategory, transactionIsExpense})
             .then(data=>{
                 if(typeof data=== 'undefined'){
@@ -65,7 +67,36 @@ export default function AddTransactionDialog({
                 }else{
                     submitAdd(balance, transactionIsExpense);
                 }
-          })      
+          })*/  
+          
+        const createParams =  {
+            balance, description, selectedCategory, selectedSubCategory, transactionIsExpense, 
+            walletToUpdateId:walletId
+        }
+
+        try {
+            const addResult = await fetchJson("/api/transactions/add-transaction", {
+              method: "POST",            
+              headers: {
+                Accept: 'application/json',
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({createParams})
+            });          
+            const {acknowledged, modifiedCount } = addResult; 
+            if(acknowledged && modifiedCount === 1){
+              submitAdd(balance, transactionIsExpense); 
+            }
+            else{
+              throw new Error("Add transaction failed");
+            }
+           
+        } catch (error) {
+            console.error("An unexpected error happened:", error);
+            
+        } finally {
+            setIsSubmitting(false)
+        }
     }
   
     return (

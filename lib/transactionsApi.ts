@@ -131,7 +131,8 @@ export const transactionsPerPage = async (walletId, currentPage, filterData, sor
   return transactionData;
 }
 
-export const createTransaction  = async (balance, description, selectedCategory, selectedSubCategory, transactionIsExpense, walletToUpdateId) => {
+export const createTransaction  = async (createParams) => {
+  const {balance, description, selectedCategory, selectedSubCategory, transactionIsExpense, walletToUpdateId} = createParams;
   const { db } = await connectToDatabase();
 
   const today = new Date();
@@ -152,10 +153,17 @@ export const createTransaction  = async (balance, description, selectedCategory,
                           createdAt: today,
                           updatedAt: today
                         });
-    if(!createResult.acknowledged || !createResult.insertedId || createResult.insertedId === null){
+
+    if(
+        !createResult.acknowledged ||          
+        createResult.insertedId === null || 
+        createResult.insertedId.toString() === ""
+    ){
+      console.log("add transaction error")
       return {message:"error while creating transaction"}
     }else {
-      updateWalletBalance(transactionIsExpense?-balance:balance, walletToUpdateId);
+      const updateWalletResult  = await updateWalletBalance(transactionIsExpense?-balance:balance, walletToUpdateId);
+      return updateWalletResult;
     } 
   }catch(err){
     return {message:err.toString()}
@@ -209,7 +217,8 @@ export const updateTransaction  = async (transactionId, updatedTransaction, wall
     if(updateResult.modifiedCount === 0){
       return {message:"No transaction has been updated!?"}
     }else {
-      updateWalletBalance(walletBalance, wallet);
+      const updateWalletResult = await updateWalletBalance(walletBalance, wallet);
+      return updateWalletResult;
     }
   }catch(err){
     return {message:err.toString()}
@@ -229,7 +238,8 @@ export const deleteTransaction  = async (transactionId, walletId, updatedWalletB
     if(deleteResult.deletedCount !== 1){
       return {message:"error deleting transactions"}
     }else{
-      updateWalletBalance(updatedWalletBalance, walletId);
+      const updateWalletResult  = await updateWalletBalance(updatedWalletBalance, walletId);
+      return updateWalletResult;
     }
   }catch(err){
     return {message:err.toString()}
@@ -244,9 +254,9 @@ const updateWalletBalance = async (balance, walletId) => {
                                 .updateOne(
                                   {_id:new ObjectId(walletId)},
                                   {
-                                    $inc:{amount:balance}
+                                    $inc:{balance:balance},
+                                    $set: { updatedAt: new Date() }
                                   }
                                 )
-
     return updateWalletResult;
 }

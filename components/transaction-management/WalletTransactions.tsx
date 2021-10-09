@@ -146,25 +146,7 @@ const WalletTransactions = ({
 	
 	const getNewPageData = async (resetPage = false) => {
 		setIsLoading(true);		
-		if(walletId!==''){
-      /*
-			getTransactionsByWallet(walletId, !resetPage?currentPage:0, sort, filter)
-				.then(data=>{
-					if(typeof data === 'undefined'){
-						setIsLoading(false);
-            setRefresh(false);
-            setConnectionError(true);
-						return;
-					}					
-					if(data.error){							
-            setConnectionError(true);					
-					}else{						
-						setTransactions(setTransactionsCategoryName(data));						
-            setConnectionError(false);
-					}
-					setIsLoading(false);
-          setRefresh(false);
-				})*/
+		if(walletId!==''){     
 
         try {
           const pageData = await fetchJson("/api/transactions/transactions-per-page", {
@@ -215,6 +197,7 @@ const WalletTransactions = ({
 	}
 
 	const submitAddAndRefresh = (balance:number, isExpense:boolean) => {
+    console.log(`submitAddAndRefresh : ${balance} - ${isExpense}`)
 		if(currentPage!==0){
 			setPaginationData({
 								currentPage:0, 
