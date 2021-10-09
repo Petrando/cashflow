@@ -1,5 +1,4 @@
 import {useState, useEffect} from 'react';
-import {updateTransaction} from "../../api/transactionApi";
 import fetchJson from '../../lib/fetchJson';
 import { 
             Button, 
@@ -99,25 +98,10 @@ export default function EditTransactionDialog({
   
         const transactionId = editedTransaction._id;	
   
-        setIsSubmitting(true);
-        /*
-        updateTransaction(walletId, transactionId, updatedWalletBalance, updatedTransaction)
-            .then(data=>{
-                if(typeof data==='undefined'){
-                    console.log('Connection error?!');
-                    setIsSubmitting(false);
-                    return;
-                }
-  
-                if(data.error){
-                    console.log(data.error);
-                }else{
-                    submitEdit(updatedWalletBalance)
-                }
-        });*/
+        setIsSubmitting(true);        
         
         try {
-          const addResult = await fetchJson("/api/transactions/update-transaction", {
+          const editResult = await fetchJson("/api/transactions/update-transaction", {
             method: "POST",            
             headers: {
               Accept: 'application/json',
@@ -125,7 +109,7 @@ export default function EditTransactionDialog({
             },
             body: JSON.stringify({transactionId, updatedTransaction, walletBalance: updatedWalletBalance})
           });          
-          const {acknowledged, modifiedCount } = addResult; 
+          const {acknowledged, modifiedCount } = editResult; 
           if(acknowledged && modifiedCount === 1){
             submitEdit(updatedWalletBalance); 
           }
@@ -158,7 +142,6 @@ export default function EditTransactionDialog({
         if(adjusted){
             setBalance(adjustedBalance);
             setEditDirty(true);   
-            console.log(adjusted);
         }
         return adjusted;  
     }

@@ -5,8 +5,8 @@ export default async function editTransaction(req:NextApiRequest, res:NextApiRes
     const {transactionId, updatedTransaction, walletBalance} = req.body;
 
     try {
-        const addResult = await updateTransaction(transactionId, updatedTransaction, walletBalance);   
-        res.json(addResult);
+        const updateResult = await updateTransaction(transactionId, updatedTransaction, walletBalance);   
+        res.json(updateResult);
       } catch (error) {
         const { response: fetchResponse } = error;
         res.status(fetchResponse?.status || 500).json(error.data);

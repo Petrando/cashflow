@@ -3,7 +3,7 @@ import { Button, Dialog, DialogTitle, DialogContent, DialogActions, Typography }
 import { TransactionToDeleteTable } from './TransactionTable';
 import { LoadingDiv } from '../globals/LoadingBackdrop';
 import DialogSlide from '../globals/DialogSlide';
-import { deleteTransaction } from '../../api/transactionApi';
+import fetchJson from '../../lib/fetchJson';
 import { deleteTransactionI } from '../../types';
 
 export default function DeleteTransactionDialog({
@@ -30,7 +30,7 @@ export default function DeleteTransactionDialog({
         }
     }, []);
 
-    const submitDeleteData = (e) => {
+    const submitDeleteData = async (e) => {
         e.preventDefault();     
 
         const updatedWalletBalance = name === 'Expense'?
@@ -39,21 +39,30 @@ export default function DeleteTransactionDialog({
                                         walletBalance - amount
 
         setIsSubmitting(true);
-        deleteTransaction(walletId, _id, updatedWalletBalance)
-            .then(data => {
-                                if(typeof data === 'undefined'){
-                                    console.log('Connection error?');
-                                    setIsSubmitting(false);
-                                    return;
-                                }
 
-                                if(data.error){
-                                    console.log(data.error)
-                                    setIsSubmitting(false);
-                                }else{
-                                    submitDelete(updatedWalletBalance);
-                                }    		
-            });
+        try {
+            const deleteResult = await fetchJson("/api/transactions/delete-transaction", {
+                method: "POST",            
+                headers: {
+                  Accept: 'application/json',
+                  "Content-Type": "application/json"
+                },
+                body: JSON.stringify({transactionId:_id, walletId, updatedWalletBalance})
+            });          
+            const {acknowledged, modifiedCount } = deleteResult; 
+            if(acknowledged && modifiedCount === 1){
+                submitDelete(updatedWalletBalance); 
+            }
+            else{
+                throw new Error("Delete transaction failed");
+            }
+             
+        } catch (error) {
+              console.error("An unexpected error happened:", error);
+              
+        } finally {
+              setIsSubmitting(false)
+        }
     }
 
     return (
@@ -68,7 +77,7 @@ export default function DeleteTransactionDialog({
             <DialogTitle id="delete-dialog-title">
             {
                 isSubmittingData?
-                'Submitting....'
+                'Deleting....'
                 :
                 allowDelete?'Delete this transaction?':'Cannot delete transaction (wallet must not negative)'
             }

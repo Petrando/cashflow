@@ -249,6 +249,8 @@ export const deleteTransaction  = async (transactionId, walletId, updatedWalletB
 const updateWalletBalance = async (balance, walletId) => {
   const { db } = await connectToDatabase();
 
+  console.log(balance, typeof balance)
+
   const updateWalletResult = await db
                                 .collection("wallets")
                                 .updateOne(
