@@ -43,6 +43,10 @@ export default function AddTransactionDialog({
       
         if(isExpense && (balance > walletBalance)) {
           setBalance(walletBalance);
+        }else{
+          if(balance <= 0){
+            setBalance(1);//income must be at least 1
+          }
         }
     }
   
@@ -91,7 +95,6 @@ export default function AddTransactionDialog({
                             selectItems={categories}
                             value={selectedCategory}
                             onChange={changeCategory}
-                            disabled={transactionIsExpense && walletBalance===0}
                         />
                         <SelectControl 
                             labelId={"subcategory-select-label"} 
@@ -125,6 +128,10 @@ export default function AddTransactionDialog({
                                             let newBalance = (isNaN(newValue) || newValue < 0)?0:newValue;
                                             if(transactionIsExpense && (newBalance > walletBalance)){
                                                 newBalance = walletBalance;
+                                            }else{
+                                              if(newBalance <= 0){
+                                                newBalance = 1;//income must be at least 1
+                                              }
                                             } 
                                             setBalance(newBalance);
                                 }}
@@ -151,7 +158,7 @@ export default function AddTransactionDialog({
                 <Button 
                     onClick={submitTransaction} 
                     color="primary"          
-                    disabled={isSubmittingData}
+                    disabled={isSubmittingData || (transactionIsExpense && walletBalance===0)}
                 >
                     Submit
                 </Button>
