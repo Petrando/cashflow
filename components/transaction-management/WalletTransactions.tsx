@@ -157,8 +157,7 @@ const WalletTransactions = ({
             },
             body: JSON.stringify({filterData:filter, sortData:sort, walletId, currentPage:!resetPage?currentPage:0})
           });
-
-          console.log(pageData);
+         
           setTransactions(setTransactionsCategoryName(pageData));						
           setConnectionError(false);
         }catch(err){

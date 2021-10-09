@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react';
-import {updateTransaction} from "../../api/transactionApi"
+import {updateTransaction} from "../../api/transactionApi";
+import fetchJson from '../../lib/fetchJson';
 import { 
             Button, 
             Dialog, 
@@ -72,7 +73,7 @@ export default function EditTransactionDialog({
         setEditDirty(false);
     }
   
-    const submitData = (e) => {
+    const submitData = async (e) => {
         e.preventDefault();       
         if(!editDirty){
             cancelEdit();
@@ -99,6 +100,7 @@ export default function EditTransactionDialog({
         const transactionId = editedTransaction._id;	
   
         setIsSubmitting(true);
+        /*
         updateTransaction(walletId, transactionId, updatedWalletBalance, updatedTransaction)
             .then(data=>{
                 if(typeof data==='undefined'){
@@ -112,7 +114,31 @@ export default function EditTransactionDialog({
                 }else{
                     submitEdit(updatedWalletBalance)
                 }
-        }); 
+        });*/
+        
+        try {
+          const addResult = await fetchJson("/api/transactions/update-transaction", {
+            method: "POST",            
+            headers: {
+              Accept: 'application/json',
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({transactionId, updatedTransaction, walletBalance: updatedWalletBalance})
+          });          
+          const {acknowledged, modifiedCount } = addResult; 
+          if(acknowledged && modifiedCount === 1){
+            submitEdit(updatedWalletBalance); 
+          }
+          else{
+            throw new Error("Edit transaction failed");
+          }
+         
+      } catch (error) {
+          console.error("An unexpected error happened:", error);
+          
+      } finally {
+          setIsSubmitting(false)
+      }
     } 
   
     const balanceAdjusting = ():boolean => {

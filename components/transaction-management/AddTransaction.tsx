@@ -1,5 +1,4 @@
 import {useState, useEffect} from 'react';
-import {addNewTransaction} from "../../api/transactionApi"
 import fetchJson from '../../lib/fetchJson';
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@material-ui/core';
 import SelectControl from '../globals/SelectControl';
@@ -55,19 +54,6 @@ export default function AddTransactionDialog({
         }
   
         setIsSubmitting(true);
-        /*
-        addNewTransaction(walletId, {balance, description, selectedCategory, selectedSubCategory, transactionIsExpense})
-            .then(data=>{
-                if(typeof data=== 'undefined'){
-                    setIsSubmitting(false);
-                    return;
-                }
-                if(data.error){
-                    console.log(data.error)
-                }else{
-                    submitAdd(balance, transactionIsExpense);
-                }
-          })*/  
           
         const createParams =  {
             balance, description, selectedCategory, selectedSubCategory, transactionIsExpense, 
