@@ -2,10 +2,10 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { updateTransaction } from "../../../lib/transactionsApi" 
 
 export default async function editTransaction(req:NextApiRequest, res:NextApiResponse) {
-    const {transactionId, updatedTransaction, walletBalance} = req.body;
+    const {transactionId, updatedTransaction, walletChange} = req.body;
 
     try {
-        const updateResult = await updateTransaction(transactionId, updatedTransaction, walletBalance);   
+        const updateResult = await updateTransaction(transactionId, updatedTransaction, walletChange);   
         res.json(updateResult);
       } catch (error) {
         const { response: fetchResponse } = error;

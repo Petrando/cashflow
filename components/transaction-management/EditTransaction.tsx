@@ -80,9 +80,8 @@ export default function EditTransactionDialog({
       
         const balanceChange = balance - editedTransaction.amount;
   
-        const updatedWalletBalance = transactionIsExpense?  walletBalance - balanceChange
-                                                            :
-                                                            walletBalance + balanceChange;
+        const walletChange = transactionIsExpense?-Math.abs(balanceChange):balanceChange
+        const updatedWalletBalance = walletBalance + walletChange;
   
         const updatedTransaction = {
             amount:balance,
@@ -107,7 +106,7 @@ export default function EditTransactionDialog({
               Accept: 'application/json',
               "Content-Type": "application/json"
             },
-            body: JSON.stringify({transactionId, updatedTransaction, walletBalance: updatedWalletBalance})
+            body: JSON.stringify({transactionId, updatedTransaction, walletChange})
           });          
           const {acknowledged, modifiedCount } = editResult; 
           if(acknowledged && modifiedCount === 1){

@@ -171,7 +171,7 @@ export const createTransaction  = async (createParams) => {
                          
 }
 
-export const updateTransaction  = async (transactionId, updatedTransaction, walletBalance) => {
+export const updateTransaction  = async (transactionId, updatedTransaction, walletChange) => {
   const {amount, description, category, wallet, createdAt} = updatedTransaction;
   const {categoryId, subCategory:{subCategoryId}} = category;
 
@@ -217,7 +217,7 @@ export const updateTransaction  = async (transactionId, updatedTransaction, wall
     if(updateResult.modifiedCount === 0){
       return {message:"No transaction has been updated!?"}
     }else {
-      const updateWalletResult = await updateWalletBalance(walletBalance, wallet);
+      const updateWalletResult = await updateWalletBalance(walletChange, wallet);
       return updateWalletResult;
     }
   }catch(err){
@@ -225,7 +225,7 @@ export const updateTransaction  = async (transactionId, updatedTransaction, wall
   }
 }
 
-export const deleteTransaction  = async (transactionId, walletId, updatedWalletBalance) => {
+export const deleteTransaction  = async (transactionId, walletId, walletChange) => {
   const { db } = await connectToDatabase();
 
   try {
@@ -238,7 +238,7 @@ export const deleteTransaction  = async (transactionId, walletId, updatedWalletB
     if(deleteResult.deletedCount !== 1){
       return {message:"error deleting transactions"}
     }else{
-      const updateWalletResult  = await updateWalletBalance(updatedWalletBalance, walletId);
+      const updateWalletResult  = await updateWalletBalance(walletChange, walletId);
       return updateWalletResult;
     }
   }catch(err){

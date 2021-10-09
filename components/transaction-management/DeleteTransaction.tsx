@@ -33,10 +33,8 @@ export default function DeleteTransactionDialog({
     const submitDeleteData = async (e) => {
         e.preventDefault();     
 
-        const updatedWalletBalance = name === 'Expense'?
-                                        walletBalance + amount
-                                        :
-                                        walletBalance - amount
+        const walletChange = name === "Expense"?amount:-Math.abs(amount);
+        const updatedWalletBalance = walletBalance + walletChange;
 
         setIsSubmitting(true);
 
@@ -47,7 +45,7 @@ export default function DeleteTransactionDialog({
                   Accept: 'application/json',
                   "Content-Type": "application/json"
                 },
-                body: JSON.stringify({transactionId:_id, walletId, updatedWalletBalance})
+                body: JSON.stringify({transactionId:_id, walletId, walletChange})
             });          
             const {acknowledged, modifiedCount } = deleteResult; 
             if(acknowledged && modifiedCount === 1){
