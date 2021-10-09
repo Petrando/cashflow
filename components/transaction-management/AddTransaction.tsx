@@ -43,16 +43,12 @@ export default function AddTransactionDialog({
       
         if(isExpense && (balance > walletBalance)) {
           setBalance(walletBalance);
-        }else{
-          if(balance <= 0){
-            setBalance(1);//income must be at least 1
-          }
         }
     }
   
     const submitTransaction = (e) => {
         e.preventDefault();  
-        if(balance===0){
+        if(balance<=0){
             cancelAdd();
             return;
         }
@@ -128,10 +124,6 @@ export default function AddTransactionDialog({
                                             let newBalance = (isNaN(newValue) || newValue < 0)?0:newValue;
                                             if(transactionIsExpense && (newBalance > walletBalance)){
                                                 newBalance = walletBalance;
-                                            }else{
-                                              if(newBalance <= 0){
-                                                newBalance = 1;//income must be at least 1
-                                              }
                                             } 
                                             setBalance(newBalance);
                                 }}
