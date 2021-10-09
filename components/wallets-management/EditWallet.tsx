@@ -47,7 +47,7 @@ function EditWalletDialog({
     
     const initializeEditData = () => {       
         console.log(walletToEdit);
-        //setWalletName(walletToEdit.name);
+        setWalletName(walletToEdit.name);
         setBalance(walletToEdit.balance);
         setWalletError('');
         setNewImg(null);
@@ -74,44 +74,29 @@ function EditWalletDialog({
             formData.set("icon", newImg);
         }    
     
-        setIsSubmitting(true);
-        /*
-        updateWallet(formData, walletToEdit._id)
-            .then(data => {
-                if(typeof data==='undefined'){
-                    setSubmitError("No return type?");
-                    setIsSubmitting(false);
-                    return;          
-                }
-                if(data.error){          
-                    setSubmitError("Please check your connection.");
-                    setIsSubmitting(false);
-                } else {          
-                    setIsSubmitting(false);
-                    finishAndRefresh();
-                }
-            });*/   
+        setIsSubmitting(true);  
     
-            try {
-              const updateResult = await fetchJson("/api/wallets/update-wallet", {
-                  method: "POST",              
-                  headers: {
+        try {
+            const updateResult = await fetchJson("/api/wallets/update-wallet", {
+                method: "POST",              
+                headers: {
                               Accept: 'application/json'
                             },
-                  body: formData
-              });
+                body: formData
+            });
                   
-              if(updateResult.message==="success"){
-                setIsSubmitting(false);
+            if(updateResult.message==="success"){
+                
                 finishAndRefresh();
-              }else{
-                setIsSubmitting(false);
-              }
-                  
-            } catch (error) {
-                console.error("An unexpected error happened:", error);
-                setIsSubmitting(false);
+            }else{
+                
             }
+                  
+        } catch (error) {
+            console.error("An unexpected error happened:", error);            
+        } finally {
+            setIsSubmitting(false);
+        }
     }
   
     return (
