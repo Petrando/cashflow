@@ -19,7 +19,7 @@ export default function TransactionSortFilter({
   }
 
   return (
-    <div>
+    <div style={{width:"100%"}}>
       <FormControl className={classes.formControl}>
         <InputLabel id="sort-label">Sort By</InputLabel>
         <Select
