@@ -11,11 +11,11 @@ const WalletIcon = ({id, displayPic}:walletIconI):JSX.Element => {
 
   useEffect(()=>{
       getIcon();
-  }, []);
+  }, [id]);
 
   const getIcon = async () => {
       try {
-        const getIconResult = await fetchJson(`/api/wallets/get-wallet-icon?random=${Math.floor(Math.random() * 100)}`, {
+        const getIconResult = await fetchJson("/api/wallets/get-wallet-icon", {
           method: "POST",            
           headers: {
             Accept: 'application/json',

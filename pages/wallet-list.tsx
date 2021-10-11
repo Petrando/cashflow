@@ -34,6 +34,7 @@ export default function WalletList() {
   useEffect(()=>{
     if(refreshMe){
       mutate();
+      console.log('refreshing....')
     }
   }, [refreshMe]);
   /*
