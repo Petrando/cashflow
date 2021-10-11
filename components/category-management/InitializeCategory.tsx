@@ -5,28 +5,15 @@ import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import {Container, Typography, TextField, Paper} from '@material-ui/core';
-
-import {initCategories} from '../../api/categoryApi';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: '100%',
-  },
-  backButton: {
-    marginRight: theme.spacing(1),
-  },
-  instructions: {
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1),
-  },
-}));
+import fetchJson from '../../lib/fetchJson';
+import { useCommonStyles } from '../../styles/material-ui.styles';
 
 function getSteps() {
   return ["Let's get started!", 'Create starter sub category for Income', 'Create starter sub category for Expenses'];
 }
 
 export default function InitializeCategory({refresh}:{refresh:()=>void}) {
-  const classes = useStyles();
+  const classes = useCommonStyles();
   const [activeStep, setActiveStep] = useState<number>(0);
   const [incomeSub, setIncomeSub] = useState<string>('');
   const [expenseSub, setExpenseSub] = useState<string>('');
@@ -46,20 +33,31 @@ export default function InitializeCategory({refresh}:{refresh:()=>void}) {
     setActiveStep(0);
   };
 
-  const submitInitialize = (e:React.MouseEvent<HTMLButtonElement, MouseEvent>):void => {
-    e.preventDefault()    
-    initCategories({incomeSub, expenseSub})
-      .then(data=>{
-        if(typeof data === 'undefined'){
-          return;
-        }
-        if(data.error){
+  const submitInitialize = async (e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault()        
 
+    try {
+        const initResult = await fetchJson("/api/categories/initialize-categories", {
+          method: "POST",            
+          headers: {
+            Accept: 'application/json',
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({incomeSub, expenseSub})
+        });          
+        console.log(initResult);
+        const {acknowledged, insertedCount  } = initResult; 
+        if(acknowledged && insertedCount === 2){
+          refresh();
         }
         else{
-          refresh();
-        }        
-      })
+          throw new Error("Category initialization failed");
+        }
+       
+    } catch (error) {
+        console.error("An unexpected error happened:", error);
+        
+    } 
   }
 
   return (
@@ -75,7 +73,7 @@ export default function InitializeCategory({refresh}:{refresh:()=>void}) {
         {activeStep === steps.length ? (
           <div>
             <Finalize incomeSub={incomeSub} expenseSub={expenseSub} />
-            <Typography className={classes.instructions}>All steps completed</Typography>
+            <Typography className={classes.topBottomSpacing1}>All steps completed</Typography>
             <Button 
               variant="contained" 
               color="primary" 
@@ -89,7 +87,7 @@ export default function InitializeCategory({refresh}:{refresh:()=>void}) {
           <div>
             {
               activeStep===0 &&
-              <Typography className={classes.instructions}>Begin intitializing transaction categories.</Typography>
+              <Typography className={classes.topBottomSpacing1}>Begin intitializing transaction categories.</Typography>
             }
             {
               activeStep===1 &&
@@ -111,7 +109,7 @@ export default function InitializeCategory({refresh}:{refresh:()=>void}) {
               <Button
                 disabled={activeStep === 0}
                 onClick={handleBack}
-                className={classes.backButton}
+                className={classes.themeSpacing1}
               >
                 Back
               </Button>

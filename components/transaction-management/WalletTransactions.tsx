@@ -286,44 +286,44 @@ const WalletTransactions = ({
 								walletBalance={walletBalance}
       			/>
       		}  
-            {
-              	categories.length > 0 &&              
-              	<TransactionSortFilter 
+          {
+              categories.length > 0 &&              
+              <TransactionSortFilter 
                 	categories={categories}
                 	sort={sort} 
                 	dispatchSort={dispatchSort}
                 	filter={filter}
                 	dispatchFilter={dispatchFilter}
-              	/>
-            }      			
-            {
-              	firstLoaded &&
-              	transactions.length === 0 &&              
-              	<Typography variant="body1" gutterBottom>
-                	No transaction yet...
-              	</Typography>
-            } 
-            {
-              	transactions.length > 0 &&
-              	<>                
-                	<TablePaging 
-                       	handlePageChange={handlePageChange} 
-                       	page={currentPage} 
-                       	count={transactionCount}
-                	/> 
-                	<TransactionTable 
-                        tableData={transactions} 
-                        setIdEdit={setIdEdit}
-                        setIdDelete={setIdDelete}
-                        sort={sort} 
-                        dispatchSort={dispatchSort}
-                	/>
-              	</>
-            }
-            {
+              />
+          }      			
+          {
+              firstLoaded &&
+              transactions.length === 0 &&              
+              <Typography variant="body1" gutterBottom>
+                No transaction yet...
+              </Typography>
+          } 
+          {
+              transactions.length > 0 &&
+              <>                
+                <TablePaging 
+                    handlePageChange={handlePageChange} 
+                    page={currentPage} 
+                    count={transactionCount}
+                /> 
+                <TransactionTable 
+                    tableData={transactions} 
+                    setIdEdit={setIdEdit}
+                    setIdDelete={setIdDelete}
+                    sort={sort} 
+                    dispatchSort={dispatchSort}
+                />
+              </>
+          }
+          {
               connectionError && 
               <ShowAlert severity="warning" label={"WARNING: check your connection"} />
-            }             
+          }             
       	</div>
 	)
 }    			

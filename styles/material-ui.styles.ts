@@ -28,6 +28,13 @@ export const useCommonStyles = makeStyles((theme: Theme) =>
     formControl: {
       margin: theme.spacing(1),
       width:'100%'
+    },
+    themeSpacing1: {
+      marginRight: theme.spacing(1),
+    },
+    topBottomSpacing1: {
+      marginTop: theme.spacing(1),
+      marginBottom: theme.spacing(1),
     }
   }),
 );

@@ -20,8 +20,8 @@ export const intitialize = async (incomeSub:string, expenseSub:string) => {
     const initData  = await db
                       .collection("categories")
                       .insertMany( [
-                        { name: "Income", subCategories:[{name:incomeSub}] },
-                        { name: "Expense", subCategories:[{name:expenseSub}] }      		
+                        { name: "Income", subCategories:[{_id:new ObjectId(), name:incomeSub}] },
+                        { name: "Expense", subCategories:[{_id:new ObjectId(), name:expenseSub}] }      		
                      ] );
 
     return initData;
