@@ -197,6 +197,7 @@ export const useTransactionStyles = makeStyles((theme: Theme) => ({
   formControl: {
     margin: theme.spacing(1),
     minWidth: 140,
+    width:'auto'
   },
   selectEmpty: {
     marginTop: theme.spacing(2),
