@@ -10,6 +10,7 @@ async function createWallet(req:NextApiRequest, res:NextApiResponse) {
           if (err) {
 
           } 
+          
           const {name, balance} = fields;
 
           const newSavingData:{

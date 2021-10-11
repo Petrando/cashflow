@@ -43,6 +43,9 @@ export const addAWallet = async (newWalletData) => {
 }
 
 export const updateWallet = async (id, updateData) => {
+  console.log('id : ' + id);
+  console.log('update data : ');
+  console.log(updateData);
 	const { db } = await connectToDatabase();
   
 	const updatedWallet = await db
@@ -56,12 +59,12 @@ export const updateWallet = async (id, updateData) => {
 	return updatedWallet;
 }
 
-export const deleteWallet = async (id) => {
+export const deleteWallet = async (walletId) => {
 	const { db } = await connectToDatabase();
 	const deletedWallet = await db
 	  .collection("wallets")
 	  .deleteOne(
-        { _id: new ObjectId(id) }
+        { _id: new ObjectId(walletId) }
      )
   
 	return deletedWallet;

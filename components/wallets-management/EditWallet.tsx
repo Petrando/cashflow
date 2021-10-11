@@ -65,6 +65,7 @@ function EditWalletDialog({
         }
     
         const formData = new FormData();
+        formData.set("id", walletToEdit._id);
         formData.set("name", walletName);
         formData.set("balance", balance.toString());
         if(newImg!==null){
@@ -79,15 +80,15 @@ function EditWalletDialog({
                 method: "POST",              
                 headers: {
                               Accept: 'application/json'
-                            },
+                          },
                 body: formData
             });
-                  
-            if(updateResult.message==="success"){
-                
-                finishAndRefresh();
-            }else{
-                
+               
+            console.log(updateResult)
+            const { acknowledged, modifiedCount } = updateResult;
+            if(acknowledged && modifiedCount === 1) {
+              finishAndRefresh();
+              console.log('succeed');
             }
                   
         } catch (error) {

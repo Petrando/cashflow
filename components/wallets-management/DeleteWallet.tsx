@@ -20,6 +20,7 @@ import DialogSlide from '../globals/DialogSlide';
 import WalletIcon from './WalletIcon';
 import { deleteWallet } from "../../api/walletApi";
 import { deleteWalletI } from "../../types";
+import fetchJson from '../../lib/fetchJson';
 import { rupiahFormatter } from "../../util-functions"
 
 function DeleteWalletDialog({ 
@@ -32,9 +33,10 @@ function DeleteWalletDialog({
     const [isSubmittingData, setIsSubmitting] = useState<boolean>(false);
     const [submitError, setSubmitError] = useState<string>("");
     
-    const submitData = (e) => {
+    const submitData = async (e) => {
         e.preventDefault();
         setIsSubmitting(true);     
+        /*
         deleteWallet(_id)
             .then(data => {       
                 if(typeof data==='undefined'){
@@ -49,7 +51,26 @@ function DeleteWalletDialog({
                     setIsSubmitting(false);
                     deleteAndRefresh();
                 }
-            }) 
+            }) */
+        try {
+            const deleteResult = await fetchJson("/api/wallets/delete-wallet", {
+                method: "DELETE",              
+                headers: {
+                            Accept: 'application/json',
+                            "Content-Type": "application/json"
+                },
+                body: JSON.stringify({walletId:_id})
+            });
+                   
+            const { acknowledged, deletedCount } = deleteResult;   
+            if(acknowledged && deletedCount === 1) {
+              deleteAndRefresh();
+            }                             
+        } catch (error) {
+            console.error("An unexpected error happened:", error);            
+        } finally {
+            setIsSubmitting(false);
+        }
     }
   
     const dialogContent = () => (

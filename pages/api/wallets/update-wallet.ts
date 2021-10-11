@@ -10,6 +10,7 @@ export default async function updateWalletData(req:NextApiRequest, res:NextApiRe
         if (err) {
 
         } 
+
         const {id, name, balance} = fields;
 
         const updatedWalletData:{
@@ -30,11 +31,8 @@ export default async function updateWalletData(req:NextApiRequest, res:NextApiRe
           updatedWalletData.icon['Content-Type'] = files.icon.type;          
         }
       
-        const updateResult = await updateWallet(id, updatedWalletData);  
-        console.log(updateResult);
-        const { modifiedCount } = updateResult
-              
-        res.json({message:modifiedCount===1?"success":"not added"});                
+        const updateResult = await updateWallet(id, updatedWalletData);                      
+        res.json(updateResult);                
       });
       } catch (error) {
         const { response: fetchResponse } = error;
