@@ -15,7 +15,7 @@ const WalletIcon = ({id, displayPic}:walletIconI):JSX.Element => {
 
   const getIcon = async () => {
       try {
-        const getIconResult = await fetchJson("/api/wallets/get-wallet-icon", {
+        const getIconResult = await fetchJson(`/api/wallets/get-wallet-icon?random=${Math.floor(Math.random() * 100)}`, {
           method: "POST",            
           headers: {
             Accept: 'application/json',

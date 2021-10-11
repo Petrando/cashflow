@@ -43,9 +43,6 @@ export const addAWallet = async (newWalletData) => {
 }
 
 export const updateWallet = async (id, updateData) => {
-  console.log('id : ' + id);
-  console.log('update data : ');
-  console.log(updateData);
 	const { db } = await connectToDatabase();
   
 	const updatedWallet = await db
