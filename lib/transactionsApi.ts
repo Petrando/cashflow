@@ -1,5 +1,6 @@
 import { ObjectId } from "mongodb";
 import { connectToDatabase } from "./mongodb";
+import { getCategories } from "./categoriesApi";
 import {getFirstDayOfMonth, getLastDayOfMonth, createMaxIsoString} from "./timeApi"
 import { errorHandler } from "./errorHandler";
 
@@ -72,11 +73,59 @@ function createSort(sort){
 	return sortObj;
 }
 
+const updateWalletBalance = async (balance, walletId) => {
+  const { db } = await connectToDatabase();
+
+  console.log(balance, typeof balance)
+
+  const updateWalletResult = await db
+                                .collection("wallets")
+                                .updateOne(
+                                  {_id:new ObjectId(walletId)},
+                                  {
+                                    $inc:{balance:balance},
+                                    $set: { updatedAt: new Date() }
+                                  }
+                                )
+    return updateWalletResult;
+}
+
+function createGraphData(categoryData, transactionData){
+	let formattedCategoryData = [];
+
+	categoryData.forEach((cD, i)=>{
+		let newData = {
+      _id : cD._id,
+      name : cD.name,
+      layers : [],
+      total: 0
+    };
+		
+		cD.subCategories.forEach((subCd, subI)=>{			
+			const myTransactions = transactionData.filter(t=>{return t.category.categoryId.toString()===cD._id.toString() && t.category.subCategory.subCategoryId.toString()===subCd._id.toString()});												   
+			
+			const myTransactionValue = myTransactions.reduce((acc, curr)=>{														
+												   	   return acc + curr.amount;
+												   }, 0);			
+
+			newData.layers.push({_id:subCd._id, name:subCd.name, value:myTransactionValue});					   
+		});
+		newData.layers.forEach(layer=>{
+			newData[layer.name] = layer.value;
+		});
+		const total = newData.layers.reduce((acc, curr)=>{return acc + curr.value}, 0);
+		newData.total = total;
+
+		formattedCategoryData.push(newData);
+	});
+	
+	return formattedCategoryData;
+}
+
 export const getWalletTransactions_and_categories = async (walletId, filterData, sortData) => {	
 
 	const filterObj = createFilter(filterData, walletId);
 	const sort = createSort(sortData);
-  console.log(filterObj)
   
   const { db } = await connectToDatabase();
 
@@ -246,19 +295,19 @@ export const deleteTransaction  = async (transactionId, walletId, walletChange) 
   }
 }
 
-const updateWalletBalance = async (balance, walletId) => {
+export const walletGraphData = async (walletId, filterData) => {
+  const filterObj = createFilter(filterData, walletId);
+
+  const categories = await getCategories();
+
   const { db } = await connectToDatabase();
 
-  console.log(balance, typeof balance)
+  const transactions = await db
+                  .collection("transactions")
+                  .find(filterObj)
+                  .toArray();
 
-  const updateWalletResult = await db
-                                .collection("wallets")
-                                .updateOne(
-                                  {_id:new ObjectId(walletId)},
-                                  {
-                                    $inc:{balance:balance},
-                                    $set: { updatedAt: new Date() }
-                                  }
-                                )
-    return updateWalletResult;
+  const graphData = createGraphData(categories, transactions);
+
+  return graphData;
 }

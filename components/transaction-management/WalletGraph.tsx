@@ -2,6 +2,7 @@ import React, {useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router'
 import { Grid, Typography } from '@material-ui/core/';
 import {getWalletGraphData} from '../../api/transactionApi';
+import fetchJson from '../../lib/fetchJson';
 import Piechart from '../globals/charts/Piechart';
 import BarChart from '../globals/charts/Barchart';
 import LoadingBackdrop, {LoadingDiv} from '../../components/globals/LoadingBackdrop';
@@ -18,47 +19,54 @@ const WalletGraph = ({changeSelectedCategory, filter, dispatchFilter}:walletGrap
       const [isLoading, setIsLoading] = useState<boolean>(true);
       const [isFirstLoad, setFirstLoad] = useState<boolean>(true);
       
-      useEffect(()=>{
+      useEffect(()=>{        
         componentLoaded = true;
         return ()=>{
           componentLoaded = false;
         }
       }, [])
 
-      useEffect(()=>{             
-            const {_id } = router.query;             
-            if(typeof _id !== 'undefined' && componentLoaded){                
-                  setIsLoading(true);
-                  getWalletGraphData(_id, filter)
-                    .then(data=>{
-                      if(typeof data==='undefined'){
-                        setIsLoading(false);
-                        return;
-                      }                              
-                      if(data.error){
-                        console.log(data.error)
-                      }else{
-                        const {categoryGraphData} = data                                 
-                        const graphData = categoryGraphData.length > 0?categoryGraphData.map((d)=>{
-                          return {
-                            name:d.name,
-                            layers:d.layers,
-                            total:d.total
-                          }
-                        })
-                        :
-                        [];
-                                                                                        
-                        setMyGraphData(graphData);   
-                      }
-                      setIsLoading(false);
-                      setFirstLoad(false);
-                    });
-            }     
-                    
+      useEffect(()=>{     
+          getGraphData();        
+          
       }, [filter]);      
       
-      return ( 
+      const getGraphData = async () => {          
+        const {_id } = router.query;
+
+        setIsLoading(true);
+
+        try {
+          const categoryGraphData = await fetchJson("/api/transactions/graph-data", {
+            method: "POST",            
+            headers: {
+              Accept: 'application/json',
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({walletId:_id, filterData:filter})
+          });                
+          
+          const graphData = categoryGraphData.length > 0?categoryGraphData.map((d)=>{
+            return {
+              name:d.name,
+              layers:d.layers,
+              total:d.total
+            }
+          })
+          :
+          [];
+                                                                          
+          setMyGraphData(graphData);
+          setFirstLoad(false);
+        } catch (error) {
+          console.error("An unexpected error happened:", error);
+          
+        } finally {
+          setIsLoading(false)
+        }
+    }
+    
+    return ( 
         <>
           {isLoading && <LoadingBackdrop isLoading={isLoading} />} 
           <TimeFilter 
@@ -79,7 +87,7 @@ const WalletGraph = ({changeSelectedCategory, filter, dispatchFilter}:walletGrap
             }
           </Grid>
         </>
-      )
+    )
 }
 
 const GraphContainer = (
