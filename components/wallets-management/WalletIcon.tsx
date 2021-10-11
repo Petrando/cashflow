@@ -5,13 +5,17 @@ import fetchJson from "../../lib/fetchJson";
 import { useWalletStyles } from "../../styles/material-ui.styles";
 import { walletIconI } from "../../types";
 
-const WalletIcon = ({id, displayPic}:walletIconI):JSX.Element => {
+const WalletIcon = ({id, displayPic, refresh}:walletIconI):JSX.Element => {
   const classes = useWalletStyles();
   const [iconData, setIconData] = useState();  
+  const [firstLoaded, setFirstLoaded] = useState<boolean>(true);
 
   useEffect(()=>{
       getIcon();
-  }, [id]);
+      if(!firstLoaded && !refresh){
+        getIcon();
+      }
+  }, [refresh]);
 
   const getIcon = async () => {
       try {
@@ -24,7 +28,10 @@ const WalletIcon = ({id, displayPic}:walletIconI):JSX.Element => {
           body: JSON.stringify({walletId:id})
         });          
          
-        setIconData(getIconResult)            
+        setIconData(getIconResult);
+        if(firstLoaded){
+          setFirstLoaded(false);
+        }            
       } catch (error) {
         console.error("An unexpected error happened:", error);
       }   

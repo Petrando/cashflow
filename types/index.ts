@@ -88,6 +88,7 @@ export interface walletDisplayI {
     walletData:walletI;
     setEdit:()=>void;
     setDelete:()=>void;
+    refresh:boolean;
 }
 
 export interface addWalletI {
@@ -267,4 +268,5 @@ export interface fetchOptionsI {
 export interface walletIconI {
   id:string;
   displayPic?:any;
+  refresh?:boolean;
 }

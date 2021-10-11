@@ -17,7 +17,7 @@ import fetchJson from '../../lib/fetchJson';
 import { walletDisplayI } from '../../types';
 import {useWalletStyles} from '../../styles/material-ui.styles';
 
-const Wallet = ({ walletData, setEdit, setDelete}:walletDisplayI):JSX.Element => {
+const Wallet = ({ walletData, setEdit, setDelete, refresh}:walletDisplayI):JSX.Element => {
     const classes = useWalletStyles();    
     const {_id, name, balance} = walletData;   
     //`${API}/wallet/photo/${_id}?random=${Math.floor(Math.random() * 100)}`
@@ -30,7 +30,7 @@ const Wallet = ({ walletData, setEdit, setDelete}:walletDisplayI):JSX.Element =>
               title={name}
               subheader={rupiahFormatter(balance)}
             />
-            <WalletIcon id={_id} />                     
+            <WalletIcon id={_id} refresh={refresh} />                     
           </CardActionArea>
           <CardActions >                                          
             <Link href={{ pathname: `/transactions`, query: { _id, name, balance } }} >

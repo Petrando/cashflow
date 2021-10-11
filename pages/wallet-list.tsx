@@ -29,12 +29,14 @@ export default function WalletList() {
 
   useEffect(()=>{
       walletData && isLoading && setIsLoading(false);
+      if(refreshMe){
+        setRefresh(false);
+      }
   }, [walletData, walletFetchErr]);
 
-  useEffect(()=>{
+  useEffect(()=>{    
     if(refreshMe){
       mutate();
-      console.log('refreshing....')
     }
   }, [refreshMe]);
   /*
@@ -102,6 +104,7 @@ export default function WalletList() {
                                           walletData={d}
                                           setEdit={()=>{setIdEdit(d._id)}}
                                           setDelete={()=>{setIdToDelete(d._id)}}
+                                          refresh={refreshMe}
                                         />
                             )}
             </Grid>

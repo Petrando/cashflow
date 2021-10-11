@@ -69,7 +69,6 @@ function EditWalletDialog({
         formData.set("name", walletName);
         formData.set("balance", balance.toString());
         if(newImg!==null){
-            console.log('icon changed');
             formData.set("icon", newImg);
         }    
     
@@ -83,12 +82,10 @@ function EditWalletDialog({
                           },
                 body: formData
             });
-               
-            console.log(updateResult)
+                           
             const { acknowledged, modifiedCount } = updateResult;
             if(acknowledged && modifiedCount === 1) {
-              finishAndRefresh();
-              console.log('succeed');
+              finishAndRefresh();              
             }
                   
         } catch (error) {
