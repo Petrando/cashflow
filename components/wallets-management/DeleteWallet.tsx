@@ -6,7 +6,6 @@ import {
         CardActionArea,
         CardActions,
         CardHeader,
-        CardMedia,
         Dialog, 
         DialogTitle, 
         DialogContent, 
@@ -18,7 +17,7 @@ import {Block, DeleteForever, Edit, List} from '@material-ui/icons';
 import ShowAlert from '../globals/Alert';
 import { LoadingDiv } from '../globals/LoadingBackdrop';
 import DialogSlide from '../globals/DialogSlide';
-import { API } from "../../config";
+import WalletIcon from './WalletIcon';
 import { deleteWallet } from "../../api/walletApi";
 import { deleteWalletI } from "../../types";
 import { rupiahFormatter } from "../../util-functions"
@@ -62,11 +61,7 @@ function DeleteWalletDialog({
                             title={name}
                             subheader={rupiahFormatter(balance)}
                         />
-                        <CardMedia 
-                            component="img"
-                            height="194"
-                            src={`${API}/wallet/photo/${_id}`}
-                        />         
+                        <WalletIcon id={_id} />       
                     </CardActionArea>
                     <CardActions >                                          
                         <Link href={{ pathname: `/transactions`, query: { _id, name, balance } }} >

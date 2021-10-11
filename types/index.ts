@@ -263,3 +263,8 @@ export interface fetchOptionsI {
   header?:any;
   body?:string;
 }
+
+export interface walletIconI {
+  id:string;
+  displayPic?:any;
+}

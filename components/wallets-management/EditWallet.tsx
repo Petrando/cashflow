@@ -1,13 +1,12 @@
 import { useState, useEffect } from 'react';
 import {
-            Button, Card, CardActionArea, CardMedia, CircularProgress, Dialog, DialogTitle, 
+            Button, Card, CardActionArea,  CircularProgress, Dialog, DialogTitle, 
             DialogContent, DialogActions, Grid, IconButton, TextField
        } from '@material-ui/core';
 import { PhotoCamera, DeleteForever } from '@material-ui/icons';       
-import { API } from "../../config";
 import ShowAlert from '../globals/Alert';
 import DialogSlide from '../globals/DialogSlide';
-import { updateWallet } from "../../api/walletApi";
+import WalletIcon from './WalletIcon';
 import fetchJson from '../../lib/fetchJson';
 import {editWalletI} from "../../types";
 import { useWalletStyles } from "../../styles/material-ui.styles";
@@ -45,8 +44,7 @@ function EditWalletDialog({
         }
     }, [imgError]);
     
-    const initializeEditData = () => {       
-        console.log(walletToEdit);
+    const initializeEditData = () => {  
         setWalletName(walletToEdit.name);
         setBalance(walletToEdit.balance);
         setWalletError('');
@@ -164,11 +162,7 @@ function EditWalletDialog({
                     <Grid item xs={12} className={classes.walletImageContainer}>
                         <Card className={classes.walletImage}>
                             <CardActionArea>
-                                <CardMedia 
-                                    style={{width:'100%', height:'194px'}}         
-                                    image={displayPic==null?`${API}/wallet/photo/${walletToEdit._id}`:displayPic}
-                                    title="Wallet Icon"
-                                />
+                                <WalletIcon id={walletToEdit._id} displayPic={displayPic} />
                             </CardActionArea>
                         </Card>
                         <Button 

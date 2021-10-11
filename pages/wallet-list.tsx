@@ -19,8 +19,6 @@ export default function WalletList() {
   const classes = useWalletStyles();
 
   const {data:walletData, mutate, error:walletFetchErr} = useSWR('/api/wallets/wallet-list', fetcher);
-
-  const [wallets, setWallets] = useState<walletI[]>([]);
   const [refreshMe, setRefresh] = useState<boolean>(false);
   const [addingWallet, setAddingWallet] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);

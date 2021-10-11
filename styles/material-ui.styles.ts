@@ -160,6 +160,10 @@ export const useWalletStyles = makeStyles({
       top:'0px',
       width:'100%',
       height:'194px'      
+    },
+    walletIcon: {
+      width:'100%',
+      height:'194px'
     }
 })
 
