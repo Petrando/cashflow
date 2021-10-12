@@ -82,8 +82,9 @@ const CategoryAndSubFilter = (props:categoryAndSubFilterI):JSX.Element => {
     return (
         <>
         <FormControl className={classes.formControl}>
-            <InputLabel id="category-label">Category</InputLabel>
+            <InputLabel className={classes.formInput} id="category-label">Category</InputLabel>
             <Select
+                className={classes.formInput}
                 labelId="category-label"
                 id="category-select"
                 value={props.transactionFilter.category}          
@@ -96,8 +97,9 @@ const CategoryAndSubFilter = (props:categoryAndSubFilterI):JSX.Element => {
             </Select>        
         </FormControl>
         <FormControl className={classes.formControl}>
-            <InputLabel id="sub-category-label">Sub Category</InputLabel>
+            <InputLabel className={classes.formInput} id="sub-category-label">Sub Category</InputLabel>
             <Select
+                className={classes.formInput}
                 labelId="sub-category-label"
                 id="sub-category-select"   
                 value={props.transactionFilter.subCategory} 

@@ -202,6 +202,7 @@ export const useTransactionStyles = makeStyles((theme: Theme) => ({
     minWidth:"190px"
   },
   selectEmpty: {
+    minWidth:"190px",
     marginTop: theme.spacing(2),
   },
   transactionsPage: {
