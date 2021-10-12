@@ -194,6 +194,9 @@ export const useTransactionStyles = makeStyles((theme: Theme) => ({
       marginTop:'15px',
       padding:'5px 5px 5px 15px',
   },
+  controlContainer: {
+    display:'flex', flexDirection:'row', justifyContent:'flex-start', alignItems:'center'
+  },
   formControl: {
     margin: theme.spacing(1),
     minWidth: "140px",

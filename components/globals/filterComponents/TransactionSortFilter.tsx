@@ -19,7 +19,7 @@ export default function TransactionSortFilter({
   }
 
   return (
-    <div>            
+    <div className={classes.controlContainer} >            
       <CategoryAndSubFilter 
         categories={categories} 
         transactionFilter={filter} 
