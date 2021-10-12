@@ -200,7 +200,8 @@ export const useTransactionStyles = makeStyles((theme: Theme) => ({
     marginRight: "5px"
   },
   formInput: {
-    minWidth:"140px"
+    minWidth:"140px",
+    marginRight: "5px"
   },
   selectEmpty: {
     minWidth:"140px",
@@ -214,6 +215,9 @@ export const useTransactionStyles = makeStyles((theme: Theme) => ({
       formControl: {
         minWidth:'130px'
       },
+      formInput: {
+        minWidth:'130px'
+      }
     }
 }));
 

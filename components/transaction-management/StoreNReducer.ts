@@ -1,4 +1,4 @@
-import getCurrentMonthName from "../../api/currentMonthName";
+import {getCurrentMonthName} from "../../lib/timeApi";
 import { transactionFilterI, transactionFilterActionI, transactionSortI, transactionSortActionI } from "../../types";
 
 export const transactionFilter:transactionFilterI = {

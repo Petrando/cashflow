@@ -8,7 +8,7 @@ import { rupiahFormatter } from '../util-functions';
 import Layout from '../components/layout'
 import WalletTransactions from '../components/transaction-management/WalletTransactions';
 import WalletGraph from '../components/transaction-management/WalletGraph';
-import getCurrentMonthName from '../api/currentMonthName';
+import {getCurrentMonthName} from '../lib/timeApi';
 import ShowAlert from '../components/globals/Alert';
 import TabPanel, {a11yProps} from "../components/transaction-management/TransactionTab"
 import { transactionFilter, transactionFilterReducer } from '../components/transaction-management/StoreNReducer';

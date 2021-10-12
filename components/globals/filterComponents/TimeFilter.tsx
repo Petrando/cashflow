@@ -35,7 +35,7 @@ const TimeFilter = (props:transactionTimeFilterI):JSX.Element => {
   return (
     <>
       <FormControl className={classes.formControl}>
-        <InputLabel shrink id="select_month_label">
+        <InputLabel className={classes.formInput} shrink id="select_month_label">
           Select Month
         </InputLabel>
         <Select

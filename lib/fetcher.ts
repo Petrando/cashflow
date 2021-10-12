@@ -1,4 +1,4 @@
-import checkResponse from "../api/checkResponse";
+import checkResponse from "./checkResponse";
 import { fetchOptionsI } from "../types";
 
 const fetcher = (...args) => fetch(...args as [string, fetchOptionsI]).then(res => {
