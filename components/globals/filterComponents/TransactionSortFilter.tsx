@@ -21,8 +21,9 @@ export default function TransactionSortFilter({
   return (
     <div style={{width:"100%", backgroundColor:'palegoldenrod'}}>
       <FormControl className={classes.formControl}>
-        <InputLabel id="sort-label">Sort By</InputLabel>
+        <InputLabel id="sort-label" className={classes.formInput}>Sort By</InputLabel>
         <Select
+          className={classes.formInput}
           labelId="sort-label"
           id="sort-select"
           value={sort.sortBy}
@@ -43,6 +44,7 @@ export default function TransactionSortFilter({
       />
       <FormControl className={classes.formControl}>
         <Button 
+          className={classes.formInput}
           variant="contained" 
           size="small" 
           color="secondary"          

@@ -198,6 +198,9 @@ export const useTransactionStyles = makeStyles((theme: Theme) => ({
     margin: theme.spacing(1),
     minWidth: "200px"
   },
+  formInput: {
+    minWidth:"190px"
+  },
   selectEmpty: {
     marginTop: theme.spacing(2),
   },
