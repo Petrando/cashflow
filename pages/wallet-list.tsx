@@ -4,7 +4,6 @@ import useSWR from 'swr';
 import { Box, Button, Container, Grid, Typography } from "@material-ui/core";
 import { AccountBalanceWallet, Add } from '@material-ui/icons';
 import Layout from '../components/layout'
-import { getWallets } from '../api/walletApi';
 import Wallet from '../components/wallets-management/Wallet';
 import AddWalletDialog from '../components/wallets-management/AddWallet';
 import EditWalletDialog from '../components/wallets-management/EditWallet';
@@ -39,26 +38,6 @@ export default function WalletList() {
       mutate();
     }
   }, [refreshMe]);
-  /*
-  useEffect(() => {
-    if(refreshMe){   
-      setIsLoading(true);   
-      getWallets()
-        .then(data => {
-          if(typeof data==='undefined'){     
-            setError("No data, please check your connection");               
-            return;          
-          }
-          if(data.error){                    
-            setError("Please check your connection")
-          } else {
-            setWallets(data);
-          }
-          setIsLoading(false);
-          setRefresh(false);
-        })   
-    }        
-  }, [refreshMe]);*/
 
   const deleteAndRefresh = () => {
     setIdToDelete("");
