@@ -7,7 +7,6 @@ import { PhotoCamera } from '@material-ui/icons';
 import DialogSlide from '../globals/DialogSlide';
 import ShowAlert from '../globals/Alert';
 import fetchJson from '../../lib/fetchJson';
-import { createWallet } from "../../api/walletApi";
 import { useWalletStyles } from "../../styles/material-ui.styles";
 import { addWalletI} from "../../types";
 

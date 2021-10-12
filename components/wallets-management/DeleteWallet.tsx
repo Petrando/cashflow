@@ -18,7 +18,6 @@ import ShowAlert from '../globals/Alert';
 import { LoadingDiv } from '../globals/LoadingBackdrop';
 import DialogSlide from '../globals/DialogSlide';
 import WalletIcon from './WalletIcon';
-import { deleteWallet } from "../../api/walletApi";
 import { deleteWalletI } from "../../types";
 import fetchJson from '../../lib/fetchJson';
 import { rupiahFormatter } from "../../util-functions"
