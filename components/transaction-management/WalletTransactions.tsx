@@ -2,7 +2,6 @@ import React, {useState, useEffect, useReducer} from 'react';
 import { Button } from "@material-ui/core";
 import { Typography } from "@material-ui/core";
 import { Add }  from '@material-ui/icons/';
-import {getTransactionsByWallet} from '../../api/transactionApi';
 import useSWR from 'swr';
 import fetcher from '../../lib/fetcher';
 import fetchJson from '../../lib/fetchJson';
