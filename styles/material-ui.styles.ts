@@ -196,19 +196,25 @@ export const useTransactionStyles = makeStyles((theme: Theme) => ({
   },
   formControl: {
     margin: theme.spacing(1),
-    minWidth: "200px"
+    minWidth: "140px",
+    marginRight: "5px"
   },
   formInput: {
-    minWidth:"190px"
+    minWidth:"140px"
   },
   selectEmpty: {
-    minWidth:"190px",
+    minWidth:"140px",
     marginTop: theme.spacing(2),
   },
   transactionsPage: {
     width:'100%',
     minHeight:'80vh'
-  }
+  },
+  [theme.breakpoints.down('xs')]: {
+      formControl: {
+        minWidth:'130px'
+      },
+    }
 }));
 
 export const useTransactionTableStyles = makeStyles({

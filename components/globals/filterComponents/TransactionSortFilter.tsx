@@ -19,7 +19,16 @@ export default function TransactionSortFilter({
   }
 
   return (
-    <div>
+    <div>            
+      <CategoryAndSubFilter 
+        categories={categories} 
+        transactionFilter={filter} 
+        dispatchFilter={dispatchFilter} 
+      />      
+      <TimeFilter 
+        transactionFilter={filter} 
+        dispatchFilter={dispatchFilter} 
+      />
       <FormControl className={classes.formControl}>
         <InputLabel id="sort-label" className={classes.formInput}>Sort By</InputLabel>
         <Select
@@ -32,16 +41,7 @@ export default function TransactionSortFilter({
           <MenuItem value={"Amount"}>Amount</MenuItem>
           <MenuItem value={"Date"}>Date</MenuItem>          
         </Select>
-      </FormControl>      
-      <CategoryAndSubFilter 
-        categories={categories} 
-        transactionFilter={filter} 
-        dispatchFilter={dispatchFilter} 
-      />      
-      <TimeFilter 
-        transactionFilter={filter} 
-        dispatchFilter={dispatchFilter} 
-      />
+      </FormControl>
       <FormControl className={classes.formControl}>
         <Button 
           className={classes.formInput}
