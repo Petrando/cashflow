@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { getCategories } from "../../../lib/categoriesApi" 
+import { getCategories } from "../../../lib/mongodb-access/categoriesApi" 
 
 export default async function savingList(req:NextApiRequest, res:NextApiResponse) {
     

@@ -1,4 +1,5 @@
 import {Dispatch} from 'react';
+import { ObjectId } from 'mongodb';
 
 export interface subCategoryI {
     _id?:string;
@@ -269,4 +270,22 @@ export interface walletIconI {
   id:string;
   displayPic?:any;
   refresh?:boolean;
+}
+
+interface queryCategoryFilterI {
+  categoryId?:ObjectId,
+  subCategory?:{
+    subCategoryId:ObjectId
+  }
+}
+
+interface createdAtFilterI {
+  $gte?:Date,
+  $lte?:Date | number
+}
+
+export interface filterObjI {
+  wallet:ObjectId,
+  category?:queryCategoryFilterI,
+  createdAt?:createdAtFilterI
 }

@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { deleteTransaction } from "../../../lib/transactionsApi" 
+import { deleteTransaction } from "../../../lib/mongodb-access/transactionsApi" 
 
 export default async function removeTransaction(req:NextApiRequest, res:NextApiResponse) {
     const {transactionId, walletId, walletChange} = req.body;

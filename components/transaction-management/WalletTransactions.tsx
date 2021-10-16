@@ -195,7 +195,6 @@ const WalletTransactions = ({
 	}
 
 	const submitAddAndRefresh = (balance:number, isExpense:boolean) => {
-    console.log(`submitAddAndRefresh : ${balance} - ${isExpense}`)
 		if(currentPage!==0){
 			setPaginationData({
 								currentPage:0, 

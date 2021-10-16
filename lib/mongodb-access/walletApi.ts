@@ -1,5 +1,5 @@
 import { ObjectId } from "mongodb";
-import { connectToDatabase } from "./mongodb";
+import { connectToDatabase } from "../mongodb";
 
 export const getWallets = async (withPhoto:boolean) => {
 	const { db } = await connectToDatabase();

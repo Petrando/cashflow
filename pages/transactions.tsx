@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import SwipeableViews from 'react-swipeable-views';
 import { useTheme } from '@material-ui/core/styles';
 import {AppBar, Paper, Tabs, Tab, Typography} from '@material-ui/core/';
-import { rupiahFormatter } from '../util-functions';
+import { rupiahFormatter } from '../lib/currencyFormatter';
 import Layout from '../components/layout'
 import WalletTransactions from '../components/transaction-management/WalletTransactions';
 import WalletGraph from '../components/transaction-management/WalletGraph';
@@ -53,7 +53,6 @@ export default function Transactions():JSX.Element {
           Wallet Transaction Details
         </title>
       </Head>
-      <ShowAlert severity="warning" label={"ATTENTION : this page is still under development"} />
       <Paper className={classes.topPageTitle}>
         <Typography variant="h4" gutterBottom component="h4">
           {name}

@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { createTransaction } from "../../../lib/transactionsApi" 
+import { createTransaction } from "../../../lib/mongodb-access/transactionsApi" 
 
 export default async function addTransaction(req:NextApiRequest, res:NextApiResponse) {
     const {createParams} = req.body;

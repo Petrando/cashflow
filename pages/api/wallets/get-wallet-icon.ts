@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { getWalletIcon } from "../../../lib/walletApi" 
+import { getWalletIcon } from "../../../lib/mongodb-access/walletApi"; 
 
 export default async function walletIcon(req:NextApiRequest, res:NextApiResponse) {      
     const {walletId} = req.body;

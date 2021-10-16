@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { transactionsPerPage } from "../../../lib/transactionsApi" 
+import { transactionsPerPage } from "../../../lib/mongodb-access/transactionsApi" 
 
 export default async function pageTransactions(req:NextApiRequest, res:NextApiResponse) {    
     const {filterData, sortData, walletId, currentPage} = req.body;

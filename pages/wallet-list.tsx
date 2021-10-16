@@ -54,8 +54,7 @@ export default function WalletList() {
       {        
         !walletData &&
         <LoadingBackdrop isLoading={true} />
-      } 
-      <ShowAlert severity="warning" label={"ATTENTION : this page is still under development"} />     
+      }     
       <Box component="div" m={1} className={classes.newWalletContainer}>
         <Button 
           className={classes.newWalletButton}

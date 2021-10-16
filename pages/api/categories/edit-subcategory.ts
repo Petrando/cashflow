@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { updateSubCategory } from '../../../lib/categoriesApi'
+import { updateSubCategory } from '../../../lib/mongodb-access/categoriesApi'
 
 const editSubCategory = async (req:NextApiRequest, res:NextApiResponse) => {
   const {categoryId, subCategoryId, subCategory} = req.body;

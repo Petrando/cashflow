@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { intitialize } from '../../../lib/categoriesApi'
+import { intitialize } from '../../../lib/mongodb-access/categoriesApi'
 
 const initializeCategories = async (req:NextApiRequest, res:NextApiResponse) => {
   const {incomeSub, expenseSub} = req.body;

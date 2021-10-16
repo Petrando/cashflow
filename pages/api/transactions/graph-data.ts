@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { walletGraphData } from "../../../lib/transactionsApi" 
+import { walletGraphData } from "../../../lib/mongodb-access/transactionsApi" 
 
 export default async function getGraphData(req:NextApiRequest, res:NextApiResponse) {
     const {walletId, filterData} = req.body;

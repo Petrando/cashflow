@@ -16,7 +16,7 @@ import SelectControl from '../globals/SelectControl';
 import Date from '../globals/date';
 import { DatePickersB } from '../globals/DatePickers';
 import { LoadingDiv } from '../globals/LoadingBackdrop';
-import { rupiahFormatter } from '../../util-functions';
+import { rupiahFormatter } from '../../lib/currencyFormatter';
 import { editTransactionI } from '../../types';
 import { useTransactionStyles } from "../../styles/material-ui.styles";
 

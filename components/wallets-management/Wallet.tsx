@@ -12,7 +12,7 @@ import {
       } from '@material-ui/core';
 import { List, Edit, Delete } from '@material-ui/icons';
 import WalletIcon from './WalletIcon';
-import { rupiahFormatter } from '../../util-functions';
+import { rupiahFormatter } from '../../lib/currencyFormatter';
 import fetchJson from '../../lib/fetchJson';
 import { walletDisplayI } from '../../types';
 import {useWalletStyles} from '../../styles/material-ui.styles';

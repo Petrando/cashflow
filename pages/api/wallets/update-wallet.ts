@@ -1,7 +1,7 @@
 const fs = require('fs');
 const formidable = require('formidable');
 import { NextApiRequest, NextApiResponse } from 'next'
-import { updateWallet } from "../../../lib/walletApi"
+import { updateWallet } from "../../../lib/mongodb-access/walletApi"
 
 export default async function updateWalletData(req:NextApiRequest, res:NextApiResponse) {
     try {

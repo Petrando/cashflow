@@ -1,7 +1,7 @@
 const fs = require('fs');
 const formidable = require('formidable');
 import { NextApiRequest, NextApiResponse } from 'next'
-import {addAWallet} from "../../../lib/walletApi";
+import {addAWallet} from "../../../lib/mongodb-access/walletApi";
 
 async function createWallet(req:NextApiRequest, res:NextApiResponse) {
     try {

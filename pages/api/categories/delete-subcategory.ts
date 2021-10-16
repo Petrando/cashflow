@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { deleteSubCategory } from '../../../lib/categoriesApi'
+import { deleteSubCategory } from '../../../lib/mongodb-access/categoriesApi'
 
 const deleteASubCategory = async (req:NextApiRequest, res:NextApiResponse) => {
   const {categoryId, subCategoryId} = req.body;

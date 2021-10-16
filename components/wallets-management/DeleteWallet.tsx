@@ -20,7 +20,7 @@ import DialogSlide from '../globals/DialogSlide';
 import WalletIcon from './WalletIcon';
 import { deleteWalletI } from "../../types";
 import fetchJson from '../../lib/fetchJson';
-import { rupiahFormatter } from "../../util-functions"
+import { rupiahFormatter } from '../../lib/currencyFormatter';
 
 function DeleteWalletDialog({ 
                                 cancelDelete, 

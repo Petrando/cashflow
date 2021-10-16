@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { getSubCategoryTransactionCount } from '../../../lib/categoriesApi'
+import { getSubCategoryTransactionCount } from '../../../lib/mongodb-access/categoriesApi'
 
 const countTransaction = async (req:NextApiRequest, res:NextApiResponse) => {
   const {categoryId, subCategoryId} = req.body;

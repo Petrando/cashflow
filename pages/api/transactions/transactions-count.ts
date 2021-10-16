@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { useRouter } from 'next/router'
-import { getTransactionCount } from "../../../lib/transactionsApi" 
+import { getTransactionCount } from "../../../lib/mongodb-access/transactionsApi" 
 
 export default async function transactionsAndCategories(req:NextApiRequest, res:NextApiResponse) {
     const router = useRouter();

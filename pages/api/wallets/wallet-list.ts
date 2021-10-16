@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { getWallets } from "../../../lib/walletApi" 
+import { getWallets } from "../../../lib/mongodb-access/walletApi" 
 
 export default async function walletList(req:NextApiRequest, res:NextApiResponse) {
     try {

@@ -1,28 +1,10 @@
 import { ObjectId } from "mongodb";
-import { connectToDatabase } from "./mongodb";
+import { connectToDatabase } from "../mongodb";
 import { getCategories } from "./categoriesApi";
-import {getFirstDayOfMonth, getLastDayOfMonth, createMaxIsoString} from "./timeApi"
-import { errorHandler } from "./errorHandler";
+import {getFirstDayOfMonth, getLastDayOfMonth, createMaxIsoString} from "../timeApi"
+import { filterObjI } from "../../types";
 
 const itemPerPage = 5;
-
-interface categoryFilterI {
-  categoryId?:ObjectId,
-  subCategory?:{
-    subCategoryId:ObjectId
-  }
-}
-
-interface createdAtFilterI {
-  $gte?:Date,
-  $lte?:Date | number
-}
-
-interface filterObjI {
-  wallet:ObjectId,
-  category?:categoryFilterI,
-  createdAt?:createdAtFilterI
-}
 
 function createFilter(filterData, walletId){	
 	const {category, subCategory, dateFilter} = filterData;
@@ -75,8 +57,6 @@ function createSort(sort){
 
 const updateWalletBalance = async (balance, walletId) => {
   const { db } = await connectToDatabase();
-
-  console.log(balance, typeof balance)
 
   const updateWalletResult = await db
                                 .collection("wallets")

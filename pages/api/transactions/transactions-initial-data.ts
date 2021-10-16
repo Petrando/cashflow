@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { getWalletTransactions_and_categories } from "../../../lib/transactionsApi" 
+import { getWalletTransactions_and_categories } from "../../../lib/mongodb-access/transactionsApi" 
 
 export default async function transactionsAndCategories(req:NextApiRequest, res:NextApiResponse) {
     const {filterData, sortData, walletId} = req.body;

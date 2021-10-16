@@ -3,7 +3,7 @@ import fetchJson from '../../lib/fetchJson';
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@material-ui/core';
 import SelectControl from '../globals/SelectControl';
 import { LoadingDiv } from '../globals/LoadingBackdrop';
-import { rupiahFormatter } from '../../util-functions';
+import { rupiahFormatter } from '../../lib/currencyFormatter';
 import { addTransactionI } from '../../types';
 import { useTransactionStyles } from "../../styles/material-ui.styles";
 

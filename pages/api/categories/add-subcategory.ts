@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { addSubCategory } from '../../../lib/categoriesApi'
+import { addSubCategory } from '../../../lib/mongodb-access/categoriesApi'
 
 const addNewSubCategory = async (req:NextApiRequest, res:NextApiResponse) => {
   //const {categoryId, subCategory} = JSON.parse(req.body);

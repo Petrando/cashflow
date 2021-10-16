@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { updateTransaction } from "../../../lib/transactionsApi" 
+import { updateTransaction } from "../../../lib/mongodb-access/transactionsApi" 
 
 export default async function editTransaction(req:NextApiRequest, res:NextApiResponse) {
     const {transactionId, updatedTransaction, walletChange} = req.body;

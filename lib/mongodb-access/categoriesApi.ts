@@ -1,6 +1,6 @@
 import { ObjectId } from "mongodb";
-import { connectToDatabase } from "./mongodb";
-import { newSubCategorySubmitI } from "../types";
+import { connectToDatabase } from "../mongodb";
+import { newSubCategorySubmitI } from "../../types";
 
 export const getCategories = async () => {
 	const { db } = await connectToDatabase();

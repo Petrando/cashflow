@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import {deleteWallet} from "../../../lib/walletApi";
+import {deleteWallet} from "../../../lib/mongodb-access/walletApi";
 
 async function removeWallet(req:NextApiRequest, res:NextApiResponse) {
     const {walletId} = req.body;
