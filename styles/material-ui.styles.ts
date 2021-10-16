@@ -216,7 +216,7 @@ export const useTransactionStyles = makeStyles((theme: Theme) => ({
   },
   [theme.breakpoints.down('xs')]: {
       formControl: {
-        minWidth:'130px'
+        minWidth:'50%'
       },
       formInput: {
         minWidth:'130px'
